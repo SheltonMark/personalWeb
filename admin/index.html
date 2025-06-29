@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理 - 我的小世界</title>
+    <link rel="stylesheet" href="/admin/admin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 登录模态框 -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="login-header">
+                <h2><i class="fas fa-user-shield"></i> 管理员登录</h2>
+            </div>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> 用户名</label>
+                    <input type="text" id="username" value="admin" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> 密码</label>
+                    <input type="password" id="password" value="123456" required>
+                </div>
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> 登录
+                </button>
+            </form>
+            <div class="login-tip">
+                默认账号：admin / 123456
+            </div>
+        </div>
+    </div>
+
+    <!-- 主界面 -->
+    <div id="adminPanel" class="admin-panel" style="display: none;">
+        <!-- 顶部导航 -->
+        <header class="admin-header">
+            <div class="header-left">
+                <h1><i class="fas fa-tachometer-alt"></i> 后台管理</h1>
+            </div>
+            <div class="header-right">
+                <span class="welcome-text">欢迎，管理员</span>
+                <button id="logoutBtn" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> 退出
+                </button>
+            </div>
+        </header>
+
+        <!-- 侧边栏 -->
+        <nav class="sidebar">
+            <ul class="nav-menu">
+                <li class="nav-item active" data-page="dashboard">
+                    <a href="#"><i class="fas fa-chart-bar"></i> 数据统计</a>
+                </li>
+                <li class="nav-item" data-page="content">
+                    <a href="#"><i class="fas fa-edit"></i> 内容管理</a>
+                </li>
+                <li class="nav-item" data-page="media">
+                    <a href="#"><i class="fas fa-image"></i> 媒体管理</a>
+                </li>
+                <li class="nav-item" data-page="settings">
+                    <a href="#"><i class="fas fa-cog"></i> 系统设置</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 数据统计 -->
+            <div id="dashboard" class="content-page active">
+                <div class="page-header">
+                    <h2><i class="fas fa-chart-bar"></i> 数据统计</h2>
+                    <p>网站访问和内容统计概览</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="articleCount">0</h3>
+                            <p>文章数量</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="growthCount">0</h3>
+                            <p>成长经历</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="peopleCount">0</h3>
+                            <p>相遇记录</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-landmark"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="museumCount">0</h3>
+                            <p>博物馆记忆</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="travelCount">0</h3>
+                            <p>旅行经历</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-images"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="imageCount">12</h3>
+                            <p>图片数量</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="visitCount">0</h3>
+                            <p>总访问量</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="lastUpdate">今天</h3>
+                            <p>最后更新</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <h3>快捷操作</h3>
+                    <div class="action-grid">
+                        <button class="action-btn" onclick="switchPage('content')">
+                            <i class="fas fa-plus"></i>
+                            <span>新建文章</span>
+                        </button>
+                        <button class="action-btn" onclick="switchPage('media')">
+                            <i class="fas fa-upload"></i>
+                            <span>上传图片</span>
+                        </button>
+                        <button class="action-btn" onclick="window.open('/', '_blank')">
+                            <i class="fas fa-external-link-alt"></i>
+                            <span>查看网站</span>
+                        </button>
+                        <button class="action-btn" onclick="switchPage('settings')">
+                            <i class="fas fa-user-edit"></i>
+                            <span>个人设置</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 内容管理 -->
+            <div id="content" class="content-page">
+                <div class="page-header">
+                    <h2><i class="fas fa-edit"></i> 内容管理</h2>
+                    <button id="addArticleBtn" class="add-btn">
+                        <i class="fas fa-plus"></i> 新建文章
+                    </button>
+                </div>
+                
+                <div class="content-tabs">
+                    <button class="tab-btn active" data-tab="articles">文章管理</button>
+                    <button class="tab-btn" data-tab="growth">溯·成长</button>
+                    <button class="tab-btn" data-tab="people">铭·相遇</button>
+                    <button class="tab-btn" data-tab="museums">凝·岁月</button>
+                    <button class="tab-btn" data-tab="travels">触·世界</button>
+                    <button class="tab-btn" data-tab="tags">标签管理</button>
+                </div>
+
+                <div class="tab-content active" id="articles-tab">
+                    <div class="content-header">
+                        <h3>📝 文章管理</h3>
+                        <button class="section-add-btn" data-section="articles">
+                            <i class="fas fa-plus"></i> 新建文章
+                        </button>
+                    </div>
+                    <div class="article-list" id="articleList">
+                        <!-- 动态加载文章列表 -->
+                    </div>
+                </div>
+
+                <div class="tab-content" id="growth-tab">
+                    <div class="content-header">
+                        <h3>🌱 成长历程</h3>
+                        <button class="section-add-btn" data-section="growth">
+                            <i class="fas fa-plus"></i> 添加成长经历
+                        </button>
+                    </div>
+                    <div class="growth-list" id="growthList">
+                        <!-- 动态加载成长历程 -->
+                    </div>
+                </div>
+
+                <div class="tab-content" id="people-tab">
+                    <div class="content-header">
+                        <h3>👥 重要的人</h3>
+                        <button class="section-add-btn" data-section="people">
+                            <i class="fas fa-plus"></i> 添加重要的人
+                        </button>
+                    </div>
+                    <div class="people-list" id="peopleList">
+                        <!-- 动态加载重要的人 -->
+                    </div>
+                </div>
+
+                <div class="tab-content" id="museums-tab">
+                    <div class="content-header">
+                        <h3>🏛️ 博物馆记忆</h3>
+                        <button class="section-add-btn" data-section="museums">
+                            <i class="fas fa-plus"></i> 添加博物馆参观
+                        </button>
+                    </div>
+                    <div class="museums-list" id="museumsList">
+                        <!-- 动态加载博物馆记忆 -->
+                    </div>
+                </div>
+
+                <div class="tab-content" id="travels-tab">
+                    <div class="content-header">
+                        <h3>✈️ 旅行日记</h3>
+                        <button class="section-add-btn" data-section="travels">
+                            <i class="fas fa-plus"></i> 添加旅行经历
+                        </button>
+                    </div>
+                    <div class="travels-list" id="travelsList">
+                        <!-- 动态加载旅行日记 -->
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tags-tab">
+                    <div class="content-header">
+                        <h3>🏷️ 标签管理</h3>
+                        <button class="section-add-btn" id="addTagBtn">
+                            <i class="fas fa-plus"></i> 添加标签
+                        </button>
+                    </div>
+                    <div class="tags-container">
+                        <div class="add-tag-form" id="addTagForm" style="display: none;">
+                            <input type="text" id="newTagInput" placeholder="输入新标签名称" maxlength="20">
+                            <button type="button" id="saveTagBtn" class="save-tag-btn">
+                                <i class="fas fa-check"></i> 保存
+                            </button>
+                            <button type="button" id="cancelTagBtn" class="cancel-tag-btn">
+                                <i class="fas fa-times"></i> 取消
+                            </button>
+                        </div>
+                        <div class="tags-list" id="tagsList">
+                            <!-- 动态加载标签列表 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 媒体管理 -->
+            <div id="media" class="content-page">
+                <div class="page-header">
+                    <h2><i class="fas fa-image"></i> 媒体管理</h2>
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>点击或拖拽文件到此处上传</p>
+                        <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
+                    </div>
+                </div>
+                
+                <div class="media-grid" id="mediaGrid">
+                    <!-- 动态加载媒体文件 -->
+                </div>
+            </div>
+
+            <!-- 系统设置 -->
+            <div id="settings" class="content-page">
+                <div class="page-header">
+                    <h2><i class="fas fa-cog"></i> 系统设置</h2>
+                    <p>配置网站的基本信息和外观设置</p>
+                </div>
+                
+                <div class="settings-tabs">
+                    <button class="settings-tab-btn active" data-tab="basic">基本设置</button>
+                    <button class="settings-tab-btn" data-tab="appearance">外观设置</button>
+                    <button class="settings-tab-btn" data-tab="photowall">照片墙配置</button>
+                    <button class="settings-tab-btn" data-tab="music">背景音乐</button>
+                </div>
+
+                <!-- 基本设置 -->
+                <div class="settings-tab-content active" id="basic-settings">
+                    <h3><i class="fas fa-info-circle"></i> 网站基本信息</h3>
+                    <form id="basicSettingsForm">
+                        <div class="settings-grid">
+                            <div class="form-group">
+                                <label>网站名称</label>
+                                <input type="text" id="siteName" placeholder="我的小清新个人空间">
+                            </div>
+                            <div class="form-group">
+                                <label>网站副标题</label>
+                                <input type="text" id="siteSubtitle" placeholder="记录生活的美好">
+                            </div>
+                            <div class="form-group">
+                                <label>导航栏标题</label>
+                                <input type="text" id="navTitle" placeholder="✿ 我的小世界 ✿">
+                            </div>
+                            <div class="form-group">
+                                <label>个人姓名</label>
+                                <input type="text" id="userName" placeholder="小璇">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>主页标题</label>
+                            <textarea id="heroTitle" rows="2" placeholder="记录生活的美好&#10;珍藏回忆的片段"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>主页标语</label>
+                            <input type="text" id="heroSubtitle" placeholder="在这里，每一个故事都值得被温柔对待">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>个人简介</label>
+                            <textarea id="userBio" rows="3" placeholder="在这里，每一个故事都值得被温柔对待"></textarea>
+                        </div>
+                        
+                        <!-- 头像设置 -->
+                        <div class="form-group">
+                            <label>用户头像</label>
+                            <div class="avatar-config">
+                                <div class="avatar-preview" id="avatarPreview">
+                                    <img id="avatarImg" src="" alt="头像预览" style="display: none;">
+                                    <div class="avatar-placeholder">
+                                        <i class="fas fa-user"></i>
+                                        <span>未设置头像</span>
+                                    </div>
+                                </div>
+                                <div class="avatar-controls">
+                                    <input type="text" id="avatarUrl" placeholder="头像图片URL" class="avatar-input">
+                                    <button type="button" class="select-avatar-btn" onclick="admin.openAvatarSelector()">
+                                        <i class="fas fa-folder-open"></i> 从媒体库选择
+                                    </button>
+                                    <button type="button" class="upload-avatar-btn" onclick="admin.uploadAvatar()">
+                                        <i class="fas fa-upload"></i> 上传新头像
+                                    </button>
+                                </div>
+                                <input type="file" id="avatarUpload" accept="image/*" style="display: none;" onchange="admin.handleAvatarUpload(event)">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>页脚信息</label>
+                            <input type="text" id="footerText" placeholder="© 2024 我的小清新个人空间 | 用心记录，温柔生活 🌸">
+                        </div>
+                        
+                        <button type="submit" class="save-btn">
+                            <i class="fas fa-save"></i> 保存基本设置
+                        </button>
+                    </form>
+                </div>
+
+                <!-- 栏目设置 -->
+                <div class="settings-tab-content" id="sections-settings">
+                    <h3><i class="fas fa-th-list"></i> 栏目标题设置</h3>
+                    <form id="sectionsSettingsForm">
+                        <div class="sections-grid">
+                            <div class="section-setting">
+                                <label>🌱 成长栏目</label>
+                                <input type="text" id="growthTitle" placeholder="溯·成长">
+                                <input type="text" id="growthSubtitle" placeholder="Growth Journey">
+                            </div>
+                            
+                            <div class="section-setting">
+                                <label>👥 相遇栏目</label>
+                                <input type="text" id="peopleTitle" placeholder="铭·相遇">
+                                <input type="text" id="peopleSubtitle" placeholder="Important People">
+                            </div>
+                            
+                            <div class="section-setting">
+                                <label>🏛️ 博物馆栏目</label>
+                                <input type="text" id="museumTitle" placeholder="凝·岁月">
+                                <input type="text" id="museumSubtitle" placeholder="Museum Memories">
+                            </div>
+                            
+                            <div class="section-setting">
+                                <label>✈️ 旅行栏目</label>
+                                <input type="text" id="travelTitle" placeholder="触·世界">
+                                <input type="text" id="travelSubtitle" placeholder="Travel Diary">
+                            </div>
+                            
+                            <div class="section-setting">
+                                <label>✍️ 文章栏目</label>
+                                <input type="text" id="articlesTitle" placeholder="文·分享">
+                                <input type="text" id="articlesSubtitle" placeholder="Article Sharing">
+                            </div>
+                            
+                            <div class="section-setting">
+                                <label>📸 照片栏目</label>
+                                <input type="text" id="photosTitle" placeholder="记忆相册">
+                                <input type="text" id="photosSubtitle" placeholder="Photo Gallery">
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="save-btn">
+                            <i class="fas fa-save"></i> 保存栏目设置
+                        </button>
+                    </form>
+                </div>
+
+                <!-- 外观设置 -->
+                <div class="settings-tab-content" id="appearance-settings">
+                    <h3><i class="fas fa-palette"></i> 主题和样式设置</h3>
+                    <form id="appearanceSettingsForm">
+                        <div class="appearance-grid">
+                            <div class="form-group">
+                                <label>主题色彩</label>
+                                <select id="themeColor">
+                                    <option value="pink">粉色系 (默认)</option>
+                                    <option value="blue">蓝色系</option>
+                                    <option value="purple">紫色系</option>
+                                    <option value="green">绿色系</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>背景效果</label>
+                                <div class="checkbox-group">
+                                    <label><input type="checkbox" id="enableSakura" checked> 樱花飘落效果</label>
+                                    <label><input type="checkbox" id="enableWater" checked> 水波纹效果</label>
+                                    <label><input type="checkbox" id="enableParticles" checked> 粒子效果</label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>动画速度</label>
+                                <select id="animationSpeed">
+                                    <option value="slow">慢速</option>
+                                    <option value="normal" selected>正常</option>
+                                    <option value="fast">快速</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>字体样式</label>
+                                <select id="fontFamily">
+                                    <option value="noto" selected>思源宋体</option>
+                                    <option value="kai">楷体</option>
+                                    <option value="hei">黑体</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="save-btn">
+                            <i class="fas fa-save"></i> 保存外观设置
+                        </button>
+                    </form>
+                </div>
+
+                <!-- 照片墙配置 -->
+                <div class="settings-tab-content" id="photowall-settings">
+                    <h3><i class="fas fa-image"></i> 照片墙配置</h3>
+                    <div class="photowall-header">
+                        <p>配置主页照片墙中显示的图片，支持从媒体库选择或直接输入URL</p>
+                        <button type="button" class="refresh-media-btn" onclick="admin.loadMediaForPhotoWall()">
+                            <i class="fas fa-sync-alt"></i> 刷新媒体库
+                        </button>
+                    </div>
+                    
+                    <form id="photowallSettingsForm">
+                        <div class="photowall-grid">
+                            <div class="photo-slot" data-slot="1">
+                                <div class="photo-preview" id="photoPreview1">
+                                    <img id="photoImg1" src="" alt="照片1预览" style="display: none;">
+                                    <div class="placeholder-text">照片位置 1</div>
+                                </div>
+                                <div class="photo-controls">
+                                    <input type="text" id="photo1Src" placeholder="图片URL" class="photo-input">
+                                    <input type="text" id="photo1Title" placeholder="照片标题" class="photo-title">
+                                    <button type="button" class="select-media-btn" onclick="admin.openMediaSelector(1)">
+                                        <i class="fas fa-folder-open"></i> 选择图片
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="photo-slot" data-slot="2">
+                                <div class="photo-preview" id="photoPreview2">
+                                    <img id="photoImg2" src="" alt="照片2预览" style="display: none;">
+                                    <div class="placeholder-text">照片位置 2</div>
+                                </div>
+                                <div class="photo-controls">
+                                    <input type="text" id="photo2Src" placeholder="图片URL" class="photo-input">
+                                    <input type="text" id="photo2Title" placeholder="照片标题" class="photo-title">
+                                    <button type="button" class="select-media-btn" onclick="admin.openMediaSelector(2)">
+                                        <i class="fas fa-folder-open"></i> 选择图片
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="photo-slot" data-slot="3">
+                                <div class="photo-preview" id="photoPreview3">
+                                    <img id="photoImg3" src="" alt="照片3预览" style="display: none;">
+                                    <div class="placeholder-text">照片位置 3</div>
+                                </div>
+                                <div class="photo-controls">
+                                    <input type="text" id="photo3Src" placeholder="图片URL" class="photo-input">
+                                    <input type="text" id="photo3Title" placeholder="照片标题" class="photo-title">
+                                    <button type="button" class="select-media-btn" onclick="admin.openMediaSelector(3)">
+                                        <i class="fas fa-folder-open"></i> 选择图片
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="photo-slot" data-slot="4">
+                                <div class="photo-preview" id="photoPreview4">
+                                    <img id="photoImg4" src="" alt="照片4预览" style="display: none;">
+                                    <div class="placeholder-text">照片位置 4</div>
+                                </div>
+                                <div class="photo-controls">
+                                    <input type="text" id="photo4Src" placeholder="图片URL" class="photo-input">
+                                    <input type="text" id="photo4Title" placeholder="照片标题" class="photo-title">
+                                    <button type="button" class="select-media-btn" onclick="admin.openMediaSelector(4)">
+                                        <i class="fas fa-folder-open"></i> 选择图片
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="photo-slot" data-slot="5">
+                                <div class="photo-preview" id="photoPreview5">
+                                    <img id="photoImg5" src="" alt="照片5预览" style="display: none;">
+                                    <div class="placeholder-text">照片位置 5</div>
+                                </div>
+                                <div class="photo-controls">
+                                    <input type="text" id="photo5Src" placeholder="图片URL" class="photo-input">
+                                    <input type="text" id="photo5Title" placeholder="照片标题" class="photo-title">
+                                    <button type="button" class="select-media-btn" onclick="admin.openMediaSelector(5)">
+                                        <i class="fas fa-folder-open"></i> 选择图片
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="photo-slot" data-slot="6">
+                                <div class="photo-preview" id="photoPreview6">
+                                    <img id="photoImg6" src="" alt="照片6预览" style="display: none;">
+                                    <div class="placeholder-text">照片位置 6</div>
+                                </div>
+                                <div class="photo-controls">
+                                    <input type="text" id="photo6Src" placeholder="图片URL" class="photo-input">
+                                    <input type="text" id="photo6Title" placeholder="照片标题" class="photo-title">
+                                    <button type="button" class="select-media-btn" onclick="admin.openMediaSelector(6)">
+                                        <i class="fas fa-folder-open"></i> 选择图片
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="save-btn">
+                                <i class="fas fa-save"></i> 保存照片墙配置
+                            </button>
+                            <button type="button" class="preview-btn" onclick="admin.previewPhotoWall()">
+                                <i class="fas fa-eye"></i> 预览效果
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 背景音乐配置 -->
+                <div class="settings-tab-content" id="music-settings">
+                    <h3><i class="fas fa-music"></i> 背景音乐配置</h3>
+                    <div class="music-header">
+                        <p>配置网站背景音乐，支持从媒体库选择音频文件或输入URL</p>
+                        <button type="button" class="refresh-media-btn" onclick="admin.loadMediaForMusic()">
+                            <i class="fas fa-sync-alt"></i> 刷新音频文件
+                        </button>
+                    </div>
+                    
+                    <form id="musicSettingsForm">
+                        <div class="music-config">
+                            <!-- 音乐开关 -->
+                            <div class="form-group">
+                                <label class="switch-label">
+                                    <input type="checkbox" id="musicEnabled" checked>
+                                    <span class="switch-slider"></span>
+                                    启用背景音乐
+                                </label>
+                            </div>
+
+                            <!-- 音乐文件配置 -->
+                            <div class="music-file-config">
+                                <div class="music-preview" id="musicPreview">
+                                    <div class="audio-player">
+                                        <audio id="audioPreview" controls style="width: 100%;">
+                                            <source id="audioSource" src="" type="audio/mpeg">
+                                            您的浏览器不支持音频播放
+                                        </audio>
+                                    </div>
+                                    <div class="music-info" id="musicInfo">
+                                        <div class="music-title">未选择音乐文件</div>
+                                        <div class="music-size">--</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="music-controls">
+                                    <input type="text" id="musicUrl" placeholder="音乐文件URL" class="music-input">
+                                    <button type="button" class="select-music-btn" onclick="admin.openMusicSelector()">
+                                        <i class="fas fa-folder-open"></i> 选择音频文件
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 播放设置 -->
+                            <div class="music-play-settings">
+                                <h4><i class="fas fa-cog"></i> 播放设置</h4>
+                                <div class="settings-row">
+                                    <div class="form-group">
+                                        <label class="switch-label">
+                                            <input type="checkbox" id="musicAutoplay" checked>
+                                            <span class="switch-slider"></span>
+                                            自动播放
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="switch-label">
+                                            <input type="checkbox" id="musicLoop" checked>
+                                            <span class="switch-slider"></span>
+                                            循环播放
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>音量设置</label>
+                                    <div class="volume-control">
+                                        <input type="range" id="musicVolume" min="0" max="1" step="0.1" value="0.5">
+                                        <span class="volume-value" id="volumeValue">50%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 音乐信息 -->
+                            <div class="music-meta-settings">
+                                <h4><i class="fas fa-info-circle"></i> 音乐信息</h4>
+                                <div class="form-group">
+                                    <label>音乐标题</label>
+                                    <input type="text" id="musicTitle" placeholder="音乐标题（可选）">
+                                </div>
+                                <div class="form-group">
+                                    <label>艺术家</label>
+                                    <input type="text" id="musicArtist" placeholder="艺术家（可选）">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="save-btn">
+                                <i class="fas fa-save"></i> 保存音乐配置
+                            </button>
+                            <button type="button" class="preview-btn" onclick="admin.previewMusic()">
+                                <i class="fas fa-play"></i> 预览播放
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 编辑模态框 -->
+    <div id="editModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 id="editModalTitle">编辑内容</h3>
+                <button class="close-btn" onclick="closeEditModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="editForm">
+                <!-- 基础字段 -->
+                <div class="form-group">
+                    <label>标题</label>
+                    <input type="text" id="editTitle" required>
+                </div>
+                
+                <!-- 图标字段 (growth/people) -->
+                <div class="form-group" id="iconGroup" style="display: none;">
+                    <label>图标 (emoji)</label>
+                    <input type="text" id="editIcon" placeholder="例如：🌱 👥 🎓 💼">
+                </div>
+                
+                <!-- 描述字段 -->
+                <div class="form-group">
+                    <label id="descriptionLabel">摘要/描述</label>
+                    <textarea id="editDescription" rows="3"></textarea>
+                </div>
+                
+                <!-- 日期字段 -->
+                <div class="form-group" id="dateGroup">
+                    <label id="dateLabel">日期</label>
+                    <input type="text" id="editDate" placeholder="例如：2023-03-15 或 2020-至今">
+                </div>
+                
+                <!-- 类型字段 (museums) -->
+                <div class="form-group" id="typeGroup" style="display: none;">
+                    <label>类型</label>
+                    <input type="text" id="editType" placeholder="例如：古建筑、历史文化、科学技术">
+                </div>
+                
+                <!-- 地点字段 (travels) -->
+                <div class="form-group" id="locationGroup" style="display: none;">
+                    <label>地点</label>
+                    <input type="text" id="editLocation" placeholder="例如：日本、法国、摩洛哥">
+                </div>
+                
+                <!-- 标签字段 -->
+                <div class="form-group" id="tagsGroup" style="display: none;">
+                    <label>标签</label>
+                    <div class="tags-input-container">
+                        <div class="selected-tags" id="selectedTags"></div>
+                        <select id="availableTags" class="tags-select">
+                            <option value="">选择标签...</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- 图片字段 -->
+                <div class="form-group" id="imageGroup">
+                    <label>图片</label>
+                    <div class="image-upload-container">
+                        <div class="image-preview" id="imagePreview" style="display: none;">
+                            <img id="previewImg" src="" alt="预览图片">
+                            <button type="button" class="remove-image-btn" onclick="removeImage()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="upload-options">
+                            <button type="button" class="select-media-btn" onclick="admin.openImageSelector()">
+                                <i class="fas fa-folder-open"></i> 从媒体库选择
+                            </button>
+                            <input type="file" id="imageUpload" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                            <button type="button" class="upload-btn" onclick="document.getElementById('imageUpload').click()">
+                                <i class="fas fa-upload"></i> 上传图片
+                            </button>
+                            <span class="or-text">或者</span>
+                            <input type="text" id="editImage" placeholder="输入图片URL" onchange="handleImageUrl(event)">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 内容字段 -->
+                <div class="form-group">
+                    <label>详细内容</label>
+                    <div class="rich-editor-container">
+                        <div class="editor-toolbar">
+                            <button type="button" class="editor-btn" onclick="formatText('bold')" title="粗体">
+                                <i class="fas fa-bold"></i>
+                            </button>
+                            <button type="button" class="editor-btn" onclick="formatText('italic')" title="斜体">
+                                <i class="fas fa-italic"></i>
+                            </button>
+                            <button type="button" class="editor-btn" onclick="formatText('underline')" title="下划线">
+                                <i class="fas fa-underline"></i>
+                            </button>
+                            <div class="separator"></div>
+                            <button type="button" class="editor-btn" onclick="formatHeading('h2')" title="标题">
+                                <i class="fas fa-heading"></i>
+                            </button>
+                            <button type="button" class="editor-btn" onclick="formatText('insertUnorderedList')" title="列表">
+                                <i class="fas fa-list-ul"></i>
+                            </button>
+                            <div class="separator"></div>
+                            <button type="button" class="editor-btn" onclick="insertImage()" title="插入图片">
+                                <i class="fas fa-image"></i>
+                            </button>
+                            <button type="button" class="editor-btn" onclick="insertLink()" title="插入链接">
+                                <i class="fas fa-link"></i>
+                            </button>
+                        </div>
+                        <div class="editor-content" id="editContent" contenteditable="true" placeholder="详细描述..."></div>
+                        <textarea id="contentHidden" style="display: none;"></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" onclick="closeEditModal()" class="cancel-btn">取消</button>
+                    <button type="submit" class="save-btn">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/admin/admin.js"></script>
+</body>
+</html> 

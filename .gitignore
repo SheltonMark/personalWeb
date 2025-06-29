@@ -1,0 +1,23 @@
+# Python缓存文件
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 临时文件
+*.tmp
+*.log
+.DS_Store
+Thumbs.db
+
+# 开发环境
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 测试文件
+test_*
+*_test.py
+
+# 私人文档（不需要上传）
+给花花的运行说明.md 

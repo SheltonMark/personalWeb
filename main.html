@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的小清新个人空间</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 音乐播放器 -->
+    <div class="music-player">
+        <audio id="bgMusic" loop preload="auto" volume="0.5" autoplay>
+            <!-- 本地背景音乐 -->
+            <source src="src/uploads/bgm.mp3" type="audio/mp3">
+        </audio>
+        <button id="musicToggle" class="music-btn" title="播放/暂停背景音乐">
+            <i class="fas fa-music"></i>
+        </button>
+        <div class="music-status" id="musicStatus">🎵 点击播放音乐</div>
+    </div>
+
+    <!-- 樱花飘落效果 -->
+    <div class="sakura-container"></div>
+    
+    <!-- 水波效果 -->
+    <div class="water-effect"></div>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text">✿ 我的小世界 ✿</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#growth" class="nav-link">溯·成长</a></li>
+                <li><a href="#people" class="nav-link">铭·相遇</a></li>
+                <li><a href="#museum" class="nav-link">凝·岁月</a></li>
+                <li><a href="#travel" class="nav-link">触·世界</a></li>
+                <li><a href="#photos" class="nav-link">记忆相册</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 主页面内容 -->
+    <main class="main-content">
+        <!-- 欢迎区域 -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="title-line">记录生活的美好</span>
+                    <span class="title-line">珍藏回忆的片段</span>
+                </h1>
+                <p class="hero-subtitle">在这里，每一个故事都值得被温柔对待</p>
+            </div>
+        </section>
+
+        <!-- Part 1: 溯·成长 -->
+        <section id="growth" class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="title-icon">🌱</span>
+                    溯·成长
+                    <span class="title-subtitle">Growth Journey</span>
+                </h2>
+                <div class="cards-grid" id="growthCards">
+                    <!-- 动态加载成长文章 -->
+                </div>
+                <div class="view-more-container">
+                    <button class="view-more-btn" onclick="loadMoreItems('growth')">
+                        <i class="fas fa-chevron-down"></i>
+                        查看更多
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 2: 铭·相遇 -->
+        <section id="people" class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="title-icon">👥</span>
+                    铭·相遇
+                    <span class="title-subtitle">Important People</span>
+                </h2>
+                <div class="cards-grid" id="peopleCards">
+                    <!-- 动态加载相遇文章 -->
+                </div>
+                <div class="view-more-container">
+                    <button class="view-more-btn" onclick="loadMoreItems('people')">
+                        <i class="fas fa-chevron-down"></i>
+                        查看更多
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 3: 凝·岁月 -->
+        <section id="museum" class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="title-icon">🏛️</span>
+                    凝·岁月
+                    <span class="title-subtitle">Museum Memories</span>
+                </h2>
+                <div class="cards-grid" id="museumCards">
+                    <!-- 动态加载博物馆文章 -->
+                </div>
+                <div class="view-more-container">
+                    <button class="view-more-btn" onclick="loadMoreItems('museums')">
+                        <i class="fas fa-chevron-down"></i>
+                        查看更多
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 4: 触·世界 -->
+        <section id="travel" class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="title-icon">✈️</span>
+                    触·世界
+                    <span class="title-subtitle">Travel Diary</span>
+                </h2>
+                <div class="cards-grid" id="travelCards">
+                    <!-- 动态加载旅行文章 -->
+                </div>
+                <div class="view-more-container">
+                    <button class="view-more-btn" onclick="loadMoreItems('travels')">
+                        <i class="fas fa-chevron-down"></i>
+                        查看更多
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- Part 5: 记忆相册 -->
+        <section id="photos" class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="title-icon">📸</span>
+                    记忆相册
+                    <span class="title-subtitle">Photo Gallery</span>
+                </h2>
+                <!-- 3D照片墙容器 - 使用居中布局 -->
+                <div class="photo-gallery-wrapper">
+                    <div class="photo-gallery-layout">
+                        <!-- 左侧3D照片墙 -->
+                        <div class="photo-wall-container">
+                            <div class="photo-wall" id="photoWall">
+                                <!-- 动态加载照片 -->
+                            </div>
+                        </div>
+                        
+                        <!-- 右侧大图预览 -->
+                        <div class="photo-preview-container">
+                            <div class="photo-preview">
+                                <img id="preview-image" src="" alt="预览图片">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 我的小清新个人空间 | 用心记录，温柔生活 🌸</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 

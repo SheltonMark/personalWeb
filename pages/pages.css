@@ -1,0 +1,634 @@
+/* 二级页面样式 */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 樱花效果容器 */
+.sakura-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+#sakura-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: 'Noto Serif SC', serif;
+    line-height: 1.6;
+    color: #fff;
+    background: #000;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* 顶部导航 */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 1000;
+    padding: 0.5rem 0;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.back-btn, .home-btn {
+    background: linear-gradient(45deg, #ff6b9d, #ff8fab);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+}
+
+.back-btn:hover, .home-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.5);
+}
+
+.nav-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    background: linear-gradient(45deg, #ff6b9d, #ff8fab, #ffb3d9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* 主要内容 */
+.main-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 100px 2rem 2rem;
+}
+
+/* 文章详情 */
+.article-detail {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 25px;
+    padding: 4rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 25px 80px rgba(255, 107, 157, 0.25);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 107, 157, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.article-detail::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 107, 157, 0.6), transparent);
+}
+
+.article-header {
+    margin-bottom: 3rem;
+    text-align: center;
+    position: relative;
+}
+
+.article-title-wrapper {
+    margin-bottom: 2rem;
+}
+
+.article-header h1 {
+    font-size: 3rem;
+    background: linear-gradient(45deg, #ff6b9d, #ff8fab, #ffb3d9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+}
+
+.title-decoration {
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(45deg, #ff6b9d, #ff8fab);
+    margin: 0 auto;
+    border-radius: 2px;
+    position: relative;
+}
+
+.title-decoration::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: #ff8fab;
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(255, 139, 171, 0.8);
+}
+
+.article-meta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-size: 0.95rem;
+    color: #ccc;
+    padding: 1rem 2rem;
+    background: rgba(255, 107, 157, 0.08);
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 107, 157, 0.15);
+    display: inline-flex;
+    margin: 0 auto;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.meta-divider {
+    color: #ff8fab;
+    font-weight: bold;
+    opacity: 0.7;
+}
+
+.article-meta i {
+    color: #ff8fab;
+    font-size: 0.9rem;
+}
+
+/* 文章图片 */
+.article-image {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.article-image img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* 文章摘要 */
+.article-excerpt {
+    background: rgba(255, 107, 157, 0.12);
+    padding: 2.5rem;
+    border-radius: 20px;
+    margin: 3rem 0;
+    border: 1px solid rgba(255, 107, 157, 0.25);
+    position: relative;
+    text-align: center;
+}
+
+.excerpt-icon {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 107, 157, 0.9);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.9rem;
+    box-shadow: 0 5px 15px rgba(255, 107, 157, 0.4);
+}
+
+.article-excerpt p {
+    font-style: italic;
+    color: #e8e8e8;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 300;
+    letter-spacing: 0.3px;
+}
+
+/* 文章内容 */
+.article-content {
+    margin: 4rem 0;
+}
+
+.content-wrapper {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.article-content {
+    font-size: 1.15rem;
+    line-height: 1.9;
+    color: #e0e0e0;
+}
+
+.article-content p {
+    margin-bottom: 2rem;
+    text-align: justify;
+    text-justify: inter-ideograph;
+}
+
+.article-content h2,
+.article-content h3 {
+    margin: 3rem 0 1.5rem;
+    color: #ff8fab;
+    font-weight: 500;
+    position: relative;
+    padding-left: 1rem;
+}
+
+.article-content h2::before,
+.article-content h3::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 60%;
+    background: linear-gradient(45deg, #ff6b9d, #ff8fab);
+    border-radius: 2px;
+}
+
+/* 文章底部 */
+.article-footer {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(255, 107, 157, 0.2);
+    position: relative;
+}
+
+.article-tags {
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    margin-top: 3.5rem;
+    padding: 2rem 2rem 1rem;
+    position: relative;
+    background: rgba(255, 107, 157, 0.03);
+    border-radius: 15px;
+}
+
+.article-tags::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 107, 157, 0.4), transparent);
+}
+
+.tag {
+    background: rgba(255, 107, 157, 0.15);
+    color: #ff8fab;
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    border: 1px solid rgba(255, 107, 157, 0.3);
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.tag:hover {
+    background: rgba(255, 107, 157, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 107, 157, 0.2);
+}
+
+.article-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1.5rem;
+}
+
+.action-btn {
+    background: rgba(255, 107, 157, 0.1);
+    color: #ff8fab;
+    border: 2px solid rgba(255, 107, 157, 0.3);
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    backdrop-filter: blur(10px);
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+}
+
+.action-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #ff6b9d, #ff8fab);
+    transition: left 0.3s ease;
+    z-index: -1;
+}
+
+.action-btn:hover {
+    color: white;
+    border-color: rgba(255, 107, 157, 0.6);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);
+}
+
+.action-btn:hover::before {
+    left: 0;
+}
+
+.action-btn i {
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.action-btn:hover i {
+    transform: scale(1.1);
+}
+
+.share-btn:hover i {
+    animation: share-bounce 0.6s ease;
+}
+
+.like-btn:hover i {
+    animation: like-pulse 0.6s ease;
+}
+
+@keyframes share-bounce {
+    0%, 100% { transform: scale(1.1); }
+    50% { transform: scale(1.3) rotate(10deg); }
+}
+
+@keyframes like-pulse {
+    0%, 100% { transform: scale(1.1); }
+    50% { transform: scale(1.4); }
+}
+
+/* 文章结束装饰 */
+.article-end {
+    margin-top: 3rem;
+    text-align: center;
+    padding: 2.5rem 0;
+}
+
+.end-decoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+.end-line {
+    flex: 1;
+    max-width: 100px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 107, 157, 0.6), transparent);
+}
+
+.end-symbol {
+    color: #ff8fab;
+    font-size: 1.8rem;
+    animation: gentle-glow 3s ease-in-out infinite alternate;
+    text-shadow: 0 0 10px rgba(255, 139, 171, 0.5);
+}
+
+.end-text {
+    color: #ff8fab;
+    font-size: 1rem;
+    font-style: italic;
+    margin: 0;
+    opacity: 0.8;
+    letter-spacing: 0.5em;
+    font-weight: 300;
+}
+
+@keyframes gentle-glow {
+    0% { 
+        text-shadow: 0 0 10px rgba(255, 139, 171, 0.5);
+        transform: scale(1);
+    }
+    100% { 
+        text-shadow: 0 0 20px rgba(255, 139, 171, 0.8);
+        transform: scale(1.05);
+    }
+}
+
+
+
+/* 返回顶部按钮 */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: linear-gradient(45deg, #ff6b9d, #ff8fab);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+}
+
+.back-to-top:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(255, 107, 157, 0.5);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .nav-container {
+        padding: 0 1rem;
+    }
+    
+    .nav-title {
+        font-size: 1rem;
+    }
+    
+    .back-btn, .home-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .main-content {
+        padding: 80px 1rem 2rem;
+    }
+    
+    .article-detail {
+        padding: 2rem 1.5rem;
+        border-radius: 15px;
+    }
+    
+    .article-header h1 {
+        font-size: 2.2rem;
+    }
+    
+    .title-decoration {
+        width: 60px;
+    }
+    
+    .article-meta {
+        padding: 0.8rem 1.5rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .meta-divider {
+        display: none;
+    }
+    
+    .article-excerpt {
+        padding: 2rem 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    .article-content {
+        font-size: 1.1rem;
+        margin: 3rem 0;
+    }
+    
+    .article-actions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .action-btn {
+        width: 200px;
+        justify-content: center;
+    }
+    
+    .article-tags {
+        margin-top: 2.5rem;
+        padding: 1.5rem 1rem 0.8rem;
+    }
+    
+    .article-tags::before {
+        width: 80px;
+    }
+    
+    .article-end {
+        margin-top: 2rem;
+        padding: 2rem 0;
+    }
+    
+    .back-to-top {
+        bottom: 1rem;
+        right: 1rem;
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .article-detail {
+        padding: 1.5rem 1rem;
+    }
+    
+    .article-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .article-content {
+        font-size: 1rem;
+    }
+    
+    .article-end {
+        margin-top: 3rem;
+        padding: 1.5rem 0;
+    }
+    
+    .end-line {
+        max-width: 60px;
+    }
+    
+    .end-symbol {
+        font-size: 1.5rem;
+    }
+}
+
+/* 动画效果 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.article-detail {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #ff6b9d, #ff8fab);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #ff5c8a, #ff7fa0);
+} 
