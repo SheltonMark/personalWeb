@@ -62,6 +62,10 @@ class AdminSystem {
         document.querySelectorAll('.section-add-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const section = btn.dataset.section;
+                // 跳过添加标签按钮，它有专门的处理逻辑
+                if (btn.id === 'addTagBtn') {
+                    return;
+                }
                 this.openEditModal('add', section);
             });
         });
@@ -1632,69 +1636,9 @@ class AdminSystem {
         }
     }
     
-    // 显示添加标签表单
-    showAddTagForm() {
-        document.getElementById('addTagForm').style.display = 'flex';
-        document.getElementById('newTagInput').focus();
-    }
+
     
-    // 隐藏添加标签表单
-    hideAddTagForm() {
-        document.getElementById('addTagForm').style.display = 'none';
-        document.getElementById('newTagInput').value = '';
-    }
-    
-    // 保存新标签
-    async saveNewTag() {
-        const tagName = document.getElementById('newTagInput').value.trim();
-        if (!tagName) {
-            this.showMessage('请输入标签名称', 'error');
-            return;
-        }
-        
-        try {
-            const response = await fetch('/api/tags', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name: tagName })
-            });
-            
-            const result = await response.json();
-            if (response.ok) {
-                this.hideAddTagForm();
-                this.loadTags();
-                this.showMessage('标签添加成功', 'success');
-            } else {
-                this.showMessage(result.error || '添加失败', 'error');
-            }
-        } catch (error) {
-            console.error('添加标签失败:', error);
-            this.showMessage('添加失败', 'error');
-        }
-    }
-    
-    // 编辑标签
-    async editTag(oldTag) {
-        const newTag = prompt('请输入新的标签名称:', oldTag);
-        if (!newTag || newTag === oldTag) return;
-        
-        try {
-            const response = await fetch(`/api/tags/${encodeURIComponent(oldTag)}/${encodeURIComponent(newTag)}`, {
-                method: 'PUT'
-            });
-            
-            const result = await response.json();
-            if (response.ok) {
-                this.loadTags();
-                this.showMessage('标签更新成功', 'success');
-            } else {
-                this.showMessage(result.error || '更新失败', 'error');
-            }
-        } catch (error) {
-            console.error('更新标签失败:', error);
-            this.showMessage('更新失败', 'error');
-        }
-    }
+
     
     // 删除标签
     async deleteTag(tag) {
@@ -1720,40 +1664,7 @@ class AdminSystem {
         }
     }
     
-    // 初始化标签管理事件
-    initTagManagement() {
-        // 添加标签按钮
-        document.getElementById('addTagBtn')?.addEventListener('click', () => {
-            this.showAddTagForm();
-        });
-        
-        // 保存标签按钮
-        document.getElementById('saveTagBtn')?.addEventListener('click', () => {
-            this.saveNewTag();
-        });
-        
-        // 取消按钮
-        document.getElementById('cancelTagBtn')?.addEventListener('click', () => {
-            this.hideAddTagForm();
-        });
-        
-        // 回车保存
-        document.getElementById('newTagInput')?.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                this.saveNewTag();
-            } else if (e.key === 'Escape') {
-                this.hideAddTagForm();
-            }
-        });
-        
-        // 标签选择器
-        document.getElementById('availableTags')?.addEventListener('change', (e) => {
-            if (e.target.value) {
-                this.addSelectedTag(e.target.value);
-                e.target.value = '';
-            }
-        });
-    }
+
     
     // 添加选中的标签
     addSelectedTag(tag) {
@@ -2909,6 +2820,155 @@ class AdminSystem {
         });
     }
 
+    // 设置选中的标签
+    setSelectedTags(tags) {
+        const container = document.getElementById('selectedTags');
+        container.innerHTML = '';
+        tags.forEach(tag => this.addSelectedTag(tag));
+    }
+
+    // 标签模态框控制方法
+    openTagModal(mode, oldTag = '') {
+        const modal = document.getElementById('tagModal');
+        const input = document.getElementById('tagInput');
+        const title = document.getElementById('tagModalTitle');
+        modal.classList.add('show');
+        input.value = oldTag || '';
+        input.focus();
+        title.textContent = mode === 'edit' ? '编辑标签' : '添加标签';
+        this._tagModalMode = mode;
+        this._tagModalOldTag = oldTag;
+    }
+
+    closeTagModal() {
+        document.getElementById('tagModal').classList.remove('show');
+        document.getElementById('tagInput').value = '';
+        this._tagModalMode = null;
+        this._tagModalOldTag = null;
+    }
+
+    // 链接模态框控制方法
+    openLinkModal() {
+        // 保存当前光标位置
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            window.savedRange = selection.getRangeAt(0);
+        }
+        
+        const modal = document.getElementById('linkModal');
+        modal.classList.add('show');
+        document.getElementById('linkUrlInput').value = '';
+        document.getElementById('linkTextInput').value = '';
+        document.getElementById('linkUrlInput').focus();
+    }
+
+    closeLinkModal() {
+        document.getElementById('linkModal').classList.remove('show');
+        document.getElementById('linkUrlInput').value = '';
+        document.getElementById('linkTextInput').value = '';
+        window.savedRange = null;
+    }
+
+    // 处理标签模态框保存
+    async handleTagModalSave() {
+        const tagName = document.getElementById('tagInput').value.trim();
+        if (!tagName) {
+            this.showMessage('请输入标签名称', 'error');
+            return;
+        }
+
+        if (this._tagModalMode === 'add') {
+            await this.saveNewTagModal(tagName);
+        } else if (this._tagModalMode === 'edit') {
+            await this.saveEditTagModal(this._tagModalOldTag, tagName);
+        }
+    }
+
+    // 保存新标签（模态框版本）
+    async saveNewTagModal(tagName) {
+        try {
+            const response = await fetch('/api/tags', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: tagName })
+            });
+            
+            const result = await response.json();
+            if (response.ok) {
+                this.closeTagModal();
+                this.loadTags();
+                this.showMessage('标签添加成功', 'success');
+            } else {
+                this.showMessage(result.error || '添加失败', 'error');
+            }
+        } catch (error) {
+            console.error('添加标签失败:', error);
+            this.showMessage('添加失败', 'error');
+        }
+    }
+
+    // 保存编辑标签（模态框版本）
+    async saveEditTagModal(oldTag, newTag) {
+        if (!newTag || newTag === oldTag) return;
+        
+        try {
+            const response = await fetch(`/api/tags/${encodeURIComponent(oldTag)}/${encodeURIComponent(newTag)}`, {
+                method: 'PUT'
+            });
+            
+            const result = await response.json();
+            if (response.ok) {
+                this.closeTagModal();
+                this.loadTags();
+                this.showMessage('标签更新成功', 'success');
+            } else {
+                this.showMessage(result.error || '更新失败', 'error');
+            }
+        } catch (error) {
+            console.error('更新标签失败:', error);
+            this.showMessage('更新失败', 'error');
+        }
+    }
+
+    // 处理链接模态框保存
+    handleLinkModalSave() {
+        const url = document.getElementById('linkUrlInput').value.trim();
+        const text = document.getElementById('linkTextInput').value.trim();
+        
+        if (!url) {
+            this.showMessage('请输入链接URL', 'error');
+            return;
+        }
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.textContent = text || url;
+        link.target = '_blank';
+
+        if (window.savedRange) {
+            // 恢复保存的光标位置
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(window.savedRange);
+            
+            if (selection.toString()) {
+                window.savedRange.deleteContents();
+            }
+            window.savedRange.insertNode(link);
+            window.savedRange.setStartAfter(link);
+            window.savedRange.collapse(true);
+        } else {
+            // 如果没有保存的范围，插入到编辑器末尾
+            const editor = document.getElementById('editContent');
+            if (editor) {
+                editor.appendChild(link);
+            }
+        }
+
+        this.closeLinkModal();
+        document.getElementById('editContent').focus();
+        this.showMessage('链接插入成功', 'success');
+    }
 }
 
 // 图片上传相关函数
@@ -3030,7 +3090,7 @@ function insertLink() {
     document.getElementById('editContent').focus();
 }
 
-// 全局函数（供HTML调用）
+// 全局函数重写 - 标签管理
 function switchPage(page) { 
     console.log('切换页面:', page);
     admin.switchPage(page); 
@@ -3039,6 +3099,11 @@ function switchPage(page) {
 function closeEditModal() { 
     console.log('HTML调用关闭模态框');
     admin.closeEditModal(); 
+}
+
+// 重写富文本插入链接函数
+function insertLink() {
+    admin.openLinkModal();
 }
 
 // 强制关闭模态框的紧急函数
@@ -3058,6 +3123,89 @@ window.forceCloseModal = function() {
 // 初始化管理系统
 const admin = new AdminSystem();
 window.admin = admin;
+
+// 重写标签管理相关方法
+admin.editTag = function(oldTag) {
+    this.openTagModal('edit', oldTag);
+};
+
+    // 等待DOM加载完成后绑定事件
+document.addEventListener('DOMContentLoaded', function() {
+    // 绑定添加标签按钮
+    const addTagBtn = document.getElementById('addTagBtn');
+    if (addTagBtn) {
+        addTagBtn.addEventListener('click', function() {
+            admin.openTagModal('add');
+        });
+    }
+
+    // 绑定标签模态框保存按钮
+    const tagModalSaveBtn = document.getElementById('tagModalSaveBtn');
+    if (tagModalSaveBtn) {
+        tagModalSaveBtn.addEventListener('click', function() {
+            admin.handleTagModalSave();
+        });
+    }
+
+    // 绑定链接模态框保存按钮
+    const linkModalSaveBtn = document.getElementById('linkModalSaveBtn');
+    if (linkModalSaveBtn) {
+        linkModalSaveBtn.addEventListener('click', function() {
+            admin.handleLinkModalSave();
+        });
+    }
+
+    // 支持回车键保存
+    const tagInput = document.getElementById('tagInput');
+    if (tagInput) {
+        tagInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                admin.handleTagModalSave();
+            } else if (e.key === 'Escape') {
+                admin.closeTagModal();
+            }
+        });
+    }
+
+    // 链接输入框回车支持
+    const linkUrlInput = document.getElementById('linkUrlInput');
+    const linkTextInput = document.getElementById('linkTextInput');
+    
+    if (linkUrlInput) {
+        linkUrlInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                if (linkTextInput) {
+                    linkTextInput.focus();
+                } else {
+                    admin.handleLinkModalSave();
+                }
+            } else if (e.key === 'Escape') {
+                admin.closeLinkModal();
+            }
+        });
+    }
+
+    if (linkTextInput) {
+        linkTextInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                admin.handleLinkModalSave();
+            } else if (e.key === 'Escape') {
+                admin.closeLinkModal();
+            }
+        });
+    }
+
+    // 绑定标签选择器
+    const availableTags = document.getElementById('availableTags');
+    if (availableTags) {
+        availableTags.addEventListener('change', function(e) {
+            if (e.target.value) {
+                admin.addSelectedTag(e.target.value);
+                e.target.value = '';
+            }
+        });
+    }
+});
 
 // 扩展系统设置tab切换逻辑，加载音乐设置
 const originalSwitchSettingsTab = admin.switchSettingsTab.bind(admin);
@@ -3300,7 +3448,7 @@ admin.loadMediaForPhotoWall = function() {
 const originalInit = admin.init.bind(admin);
 admin.init = function() {
     originalInit();
-    this.initTagManagement();
+    
     this.initSettingsPage();
     
     // 监听tab切换，加载标签数据

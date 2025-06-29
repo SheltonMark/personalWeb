@@ -2858,4 +2858,123 @@ body {
     .richtext-image-body {
         padding: 20px;
     }
+}
+
+/* 标签管理和链接插入模态框样式 */
+#tagModal.modal, #linkModal.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+#tagModal.show, #linkModal.show {
+    display: flex;
+}
+
+#tagModal .modal-content, #linkModal .modal-content {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 90%;
+    animation: modalIn 0.3s ease-out;
+}
+
+#tagModal .modal-header, #linkModal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e1e8f5;
+}
+
+#tagModal .modal-header h3, #linkModal .modal-header h3 {
+    color: #667eea;
+    font-size: 20px;
+    margin: 0;
+}
+
+#tagModal .close-btn, #linkModal .close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+#tagModal .close-btn:hover, #linkModal .close-btn:hover {
+    color: #667eea;
+}
+
+#tagModal .form-group, #linkModal .form-group {
+    margin-bottom: 20px;
+}
+
+#tagModal .form-group label, #linkModal .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #667eea;
+    font-weight: 500;
+}
+
+#tagModal input, #linkModal input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e1e8f5;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+#tagModal input:focus, #linkModal input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+#tagModal .form-actions, #linkModal .form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #e1e8f5;
+}
+
+#tagModal .cancel-btn, #linkModal .cancel-btn {
+    padding: 10px 20px;
+    background: #999;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#tagModal .cancel-btn:hover, #linkModal .cancel-btn:hover {
+    background: #777;
+}
+
+#tagModal .save-btn, #linkModal .save-btn {
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.2s ease;
+}
+
+#tagModal .save-btn:hover, #linkModal .save-btn:hover {
+    transform: translateY(-2px);
 } 

@@ -250,15 +250,6 @@
                         </button>
                     </div>
                     <div class="tags-container">
-                        <div class="add-tag-form" id="addTagForm" style="display: none;">
-                            <input type="text" id="newTagInput" placeholder="输入新标签名称" maxlength="20">
-                            <button type="button" id="saveTagBtn" class="save-tag-btn">
-                                <i class="fas fa-check"></i> 保存
-                            </button>
-                            <button type="button" id="cancelTagBtn" class="cancel-tag-btn">
-                                <i class="fas fa-times"></i> 取消
-                            </button>
-                        </div>
                         <div class="tags-list" id="tagsList">
                             <!-- 动态加载标签列表 -->
                         </div>
@@ -804,6 +795,49 @@
                     <button type="submit" class="save-btn">保存</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- 标签管理模态框 -->
+    <div id="tagModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="tagModalTitle">添加标签</h3>
+                <button class="close-btn" onclick="admin.closeTagModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="form-group">
+                <input type="text" id="tagInput" placeholder="请输入标签名称" maxlength="20">
+            </div>
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" onclick="admin.closeTagModal()">取消</button>
+                <button type="button" class="save-btn" id="tagModalSaveBtn">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 富文本插入链接模态框 -->
+    <div id="linkModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>插入链接</h3>
+                <button class="close-btn" onclick="admin.closeLinkModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="form-group">
+                <label>链接地址</label>
+                <input type="text" id="linkUrlInput" placeholder="请输入链接URL">
+            </div>
+            <div class="form-group">
+                <label>显示文字</label>
+                <input type="text" id="linkTextInput" placeholder="链接显示的文字">
+            </div>
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" onclick="admin.closeLinkModal()">取消</button>
+                <button type="button" class="save-btn" id="linkModalSaveBtn">插入链接</button>
+            </div>
         </div>
     </div>
 
