@@ -336,7 +336,7 @@ class AdminSystem {
             const museumCount = data.sections.museums ? data.sections.museums.length : 0;
             const travelCount = data.sections.travels ? data.sections.travels.length : 0;
             
-            document.getElementById('articleCount').textContent = articleCount;
+            document.getElementById('articleCount').textContent = articleCount + growthCount + peopleCount + museumCount + travelCount;
             document.getElementById('growthCount').textContent = growthCount;
             document.getElementById('peopleCount').textContent = peopleCount;
             document.getElementById('museumCount').textContent = museumCount;
