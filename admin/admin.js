@@ -1390,8 +1390,9 @@ class AdminSystem {
             const result = await response.json();
             if (response.ok) {
                 this.showMessage('基本设置保存成功', 'success');
-                // 通知主页更新设置
                 this.notifySettingsUpdate();
+                // 保存后刷新基本设置
+                await this.loadUserSettings();
             } else {
                 this.showMessage(result.error || '保存失败', 'error');
             }
@@ -1428,8 +1429,9 @@ class AdminSystem {
             const result = await response.json();
             if (response.ok) {
                 this.showMessage('栏目设置保存成功', 'success');
-                // 通知主页更新设置
                 this.notifySettingsUpdate();
+                // 保存后刷新栏目设置
+                await this.loadUserSettings();
             } else {
                 this.showMessage(result.error || '保存失败', 'error');
             }
@@ -1460,8 +1462,9 @@ class AdminSystem {
             const result = await response.json();
             if (response.ok) {
                 this.showMessage('外观设置保存成功', 'success');
-                // 通知主页更新设置
                 this.notifySettingsUpdate();
+                // 保存后刷新外观设置
+                await this.loadUserSettings();
             } else {
                 this.showMessage(result.error || '保存失败', 'error');
             }
@@ -1499,8 +1502,9 @@ class AdminSystem {
             const result = await response.json();
             if (response.ok) {
                 this.showMessage('媒体设置保存成功', 'success');
-                // 通知主页更新设置
                 this.notifySettingsUpdate();
+                // 保存后刷新媒体设置
+                await this.loadUserSettings();
             } else {
                 this.showMessage(result.error || '保存失败', 'error');
             }
@@ -1960,8 +1964,9 @@ class AdminSystem {
             
             if (response.ok) {
                 this.showMessage('照片墙配置保存成功！', 'success');
-                // 通知主页更新设置
                 this.notifySettingsUpdate();
+                // 保存后刷新照片墙设置
+                await this.loadUserSettings();
             } else {
                 throw new Error('保存失败');
             }
@@ -2191,8 +2196,9 @@ class AdminSystem {
 
             if (response.ok) {
                 this.showMessage('背景音乐设置保存成功！', 'success');
-                // 通知主页更新设置
                 this.notifySettingsUpdate();
+                // 保存后自动刷新音乐设置
+                await this.loadMusicSettings();
             } else {
                 this.showMessage('保存失败，请重试', 'error');
             }
@@ -2873,6 +2879,36 @@ class AdminSystem {
         this.showImageOptions();
     }
 
+    // 本地上传音乐文件
+    handleMusicUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        if (!file.type.startsWith('audio/')) {
+            this.showMessage('请选择音频文件', 'error');
+            return;
+        }
+        // 构造FormData上传
+        const formData = new FormData();
+        formData.append('file', file);
+        fetch('/api/upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.url) {
+                document.getElementById('musicUrl').value = data.url;
+                this.updateMusicPreview(data.url);
+                this.showMessage('上传成功', 'success');
+            } else {
+                this.showMessage('上传失败', 'error');
+            }
+        })
+        .catch(() => {
+            this.showMessage('上传失败', 'error');
+        });
+    }
+
 }
 
 // 图片上传相关函数
@@ -3110,6 +3146,9 @@ admin.savePhotowallSettings = async function() {
         
         if (response.ok) {
             this.showMessage('照片墙配置保存成功！', 'success');
+            this.notifySettingsUpdate();
+            // 保存后刷新照片墙设置
+            await this.loadUserSettings();
         } else {
             throw new Error('保存失败');
         }

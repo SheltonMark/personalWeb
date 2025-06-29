@@ -75,8 +75,8 @@
       "enabled": true,
       "autoplay": true,
       "loop": true,
-      "volume": 0.5,
-      "url": "src/uploads/bgm.mp3",
+      "volume": 0.6,
+      "url": "/src/uploads/bgm.mp3",
       "title": "网站背景音乐",
       "artist": "网站配乐"
     }

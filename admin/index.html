@@ -604,11 +604,13 @@
                         <div class="music-config">
                             <!-- 音乐开关 -->
                             <div class="form-group">
-                                <label class="switch-label">
-                                    <input type="checkbox" id="musicEnabled" checked>
-                                    <span class="switch-slider"></span>
-                                    启用背景音乐
-                                </label>
+                                <div class="switch-row">
+                                    <span>启用背景音乐</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="musicEnabled" checked>
+                                        <span class="switch-slider"></span>
+                                    </label>
+                                </div>
                             </div>
 
                             <!-- 音乐文件配置 -->
@@ -625,11 +627,14 @@
                                         <div class="music-size">--</div>
                                     </div>
                                 </div>
-                                
                                 <div class="music-controls">
                                     <input type="text" id="musicUrl" placeholder="音乐文件URL" class="music-input">
                                     <button type="button" class="select-music-btn" onclick="admin.openMusicSelector()">
                                         <i class="fas fa-folder-open"></i> 选择音频文件
+                                    </button>
+                                    <input type="file" id="musicUpload" accept="audio/mp3" style="display:none;" onchange="admin.handleMusicUpload(event)">
+                                    <button type="button" class="upload-btn" onclick="document.getElementById('musicUpload').click()">
+                                        <i class="fas fa-upload"></i> 上传本地文件
                                     </button>
                                 </div>
                             </div>
@@ -639,19 +644,22 @@
                                 <h4><i class="fas fa-cog"></i> 播放设置</h4>
                                 <div class="settings-row">
                                     <div class="form-group">
-                                        <label class="switch-label">
-                                            <input type="checkbox" id="musicAutoplay" checked>
-                                            <span class="switch-slider"></span>
-                                            自动播放
-                                        </label>
+                                        <div class="switch-row">
+                                            <span>自动播放</span>
+                                            <label class="switch">
+                                                <input type="checkbox" id="musicAutoplay" checked>
+                                                <span class="switch-slider"></span>
+                                            </label>
+                                        </div>
                                     </div>
-                                    
                                     <div class="form-group">
-                                        <label class="switch-label">
-                                            <input type="checkbox" id="musicLoop" checked>
-                                            <span class="switch-slider"></span>
-                                            循环播放
-                                        </label>
+                                        <div class="switch-row">
+                                            <span>循环播放</span>
+                                            <label class="switch">
+                                                <input type="checkbox" id="musicLoop" checked>
+                                                <span class="switch-slider"></span>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                                 
