@@ -96,12 +96,205 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // 全局变量存储动效状态
+    let yellowFlowerEffects = {
+        stars: null,
+        particles: null,
+        cursorGlow: null,
+        isActive: false
+    };
+
     // 应用主题
     function applyTheme(theme) {
         if (theme && theme.name) {
+            const previousTheme = document.documentElement.getAttribute('data-theme');
             document.documentElement.setAttribute('data-theme', theme.name);
             console.log(`已应用主题: ${theme.name}`);
+            
+            // 处理黄色花朵主题的动效
+            if (theme.name === '黄色花朵') {
+                if (!yellowFlowerEffects.isActive) {
+                    initYellowFlowerEffects();
+                }
+            } else {
+                // 其他主题移除黄色花朵动效
+                if (yellowFlowerEffects.isActive) {
+                    removeYellowFlowerEffects();
+                }
+            }
         }
+    }
+
+    // 初始化黄色花朵主题动效
+    function initYellowFlowerEffects() {
+        if (yellowFlowerEffects.isActive) return;
+        
+        console.log('初始化黄色花朵主题动效');
+        yellowFlowerEffects.isActive = true;
+        
+        // 创建星星背景
+        createYellowStars();
+        
+        // 创建粒子效果
+        createYellowParticles();
+        
+        // 创建鼠标跟随光圈
+        createCursorGlow();
+    }
+
+    // 移除黄色花朵主题动效
+    function removeYellowFlowerEffects() {
+        if (!yellowFlowerEffects.isActive) return;
+        
+        console.log('移除黄色花朵主题动效');
+        yellowFlowerEffects.isActive = false;
+        
+        // 移除星星
+        if (yellowFlowerEffects.stars) {
+            yellowFlowerEffects.stars.remove();
+            yellowFlowerEffects.stars = null;
+        }
+        
+        // 移除粒子
+        if (yellowFlowerEffects.particles) {
+            yellowFlowerEffects.particles.remove();
+            yellowFlowerEffects.particles = null;
+        }
+        
+        // 移除鼠标光圈
+        if (yellowFlowerEffects.cursorGlow) {
+            yellowFlowerEffects.cursorGlow.remove();
+            yellowFlowerEffects.cursorGlow = null;
+        }
+    }
+
+    // 创建黄色星星背景
+    function createYellowStars() {
+        const starsContainer = document.createElement('div');
+        starsContainer.id = 'yellow-stars';
+        starsContainer.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background-image: 
+                radial-gradient(circle at 15% 25%, #f4d03f 2px, transparent 2px),
+                radial-gradient(circle at 85% 15%, #f7dc6f 1.5px, transparent 1.5px),
+                radial-gradient(circle at 25% 60%, #f4d03f 2.5px, transparent 2.5px),
+                radial-gradient(circle at 75% 80%, #f7dc6f 2px, transparent 2px),
+                radial-gradient(circle at 40% 35%, #f4d03f 1px, transparent 1px),
+                radial-gradient(circle at 90% 45%, #f7dc6f 2px, transparent 2px);
+            background-size: 
+                200px 200px, 150px 150px, 180px 180px, 220px 220px, 120px 120px, 160px 160px;
+            background-position: 
+                0 0, 50px 30px, 100px 80px, 150px 120px, 200px 20px, 30px 150px;
+            background-attachment: fixed;
+        `;
+        
+        document.body.appendChild(starsContainer);
+        yellowFlowerEffects.stars = starsContainer;
+        
+        // 添加动态星星
+        for (let i = 0; i < 20; i++) {
+            const star = document.createElement('div');
+            star.className = 'yellow-star';
+            star.style.cssText = `
+                position: absolute;
+                width: ${Math.random() * 4 + 2}px;
+                height: ${Math.random() * 4 + 2}px;
+                background: #f4d03f;
+                border-radius: 50%;
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                animation: star-twinkle ${Math.random() * 3 + 2}s infinite ease-in-out;
+                animation-delay: ${Math.random() * 2}s;
+            `;
+            starsContainer.appendChild(star);
+        }
+    }
+
+    // 创建黄色粒子效果
+    function createYellowParticles() {
+        const particlesContainer = document.createElement('div');
+        particlesContainer.id = 'yellow-particles';
+        particlesContainer.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        `;
+        
+        document.body.appendChild(particlesContainer);
+        yellowFlowerEffects.particles = particlesContainer;
+        
+        // 创建粒子
+        for (let i = 0; i < 15; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'yellow-particle';
+            particle.style.cssText = `
+                position: absolute;
+                width: ${Math.random() * 3 + 1}px;
+                height: ${Math.random() * 3 + 1}px;
+                background: #f7dc6f;
+                border-radius: 50%;
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                animation: particle-float ${Math.random() * 4 + 3}s infinite linear;
+                animation-delay: ${Math.random() * 2}s;
+                opacity: ${Math.random() * 0.6 + 0.4};
+            `;
+            particlesContainer.appendChild(particle);
+        }
+    }
+
+    // 创建鼠标跟随光圈
+    function createCursorGlow() {
+        // 触摸设备不显示鼠标跟随效果
+        if ('ontouchstart' in window) {
+            return;
+        }
+        
+        const cursorGlow = document.createElement('div');
+        cursorGlow.className = 'cursor-glow';
+        cursorGlow.style.cssText = `
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, rgba(244, 208, 63, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.1s ease;
+            mix-blend-mode: screen;
+        `;
+        
+        document.body.appendChild(cursorGlow);
+        yellowFlowerEffects.cursorGlow = cursorGlow;
+        
+        // 鼠标移动事件
+        document.addEventListener('mousemove', function(e) {
+            cursorGlow.style.left = e.clientX - 20 + 'px';
+            cursorGlow.style.top = e.clientY - 20 + 'px';
+        });
+        
+        // 悬停效果
+        const hoverElements = document.querySelectorAll('.card, .nav-link, .music-btn, button, a');
+        hoverElements.forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                cursorGlow.style.transform = 'scale(1.5)';
+                cursorGlow.style.background = 'radial-gradient(circle, rgba(244, 208, 63, 0.5) 0%, transparent 70%)';
+            });
+            element.addEventListener('mouseleave', function() {
+                cursorGlow.style.transform = 'scale(1)';
+                cursorGlow.style.background = 'radial-gradient(circle, rgba(244, 208, 63, 0.3) 0%, transparent 70%)';
+            });
+        });
     }
     
     // 更新用户头像
@@ -832,7 +1025,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // 导航栏滚动效果
     function initNavbarScroll() {
         const navbar = document.querySelector('.navbar');
-        
+        // 如果是黄色花朵或明亮素雅主题，禁止滚动变色
+        const theme = document.documentElement.getAttribute('data-theme');
+        if (theme === '黄色花朵' || theme === '明亮素雅') {
+            // 明亮素雅主题：白色半透明，黄色花朵主题：米黄色半透明
+            if (theme === '明亮素雅') {
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+                navbar.style.backdropFilter = 'blur(20px)';
+            } else {
+                navbar.style.background = 'rgba(253, 252, 248, 0.95)';
+                navbar.style.backdropFilter = 'blur(20px)';
+            }
+            return;
+        }
         window.addEventListener('scroll', function() {
             if (window.scrollY > 100) {
                 navbar.style.background = 'rgba(0, 0, 0, 0.95)';
@@ -1306,6 +1511,12 @@ document.addEventListener('DOMContentLoaded', function() {
         initParticleEffect();
         initRippleEffect(); // 添加涟漪效果
         
+        // 根据当前主题初始化动效
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        if (currentTheme === '黄色花朵') {
+            initYellowFlowerEffects();
+        }
+        
         // 监听设置更新
         initSettingsListener();
         
@@ -1378,6 +1589,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // 应用其他系统设置
                 applySystemSettings(data.settings);
+                
+                // 处理主题动效更新
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                if (currentTheme === '黄色花朵') {
+                    if (!yellowFlowerEffects.isActive) {
+                        initYellowFlowerEffects();
+                    }
+                } else {
+                    if (yellowFlowerEffects.isActive) {
+                        removeYellowFlowerEffects();
+                    }
+                }
+                
                 console.log('设置已实时更新');
                 
                 // 显示更新提示

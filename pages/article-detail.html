@@ -115,12 +115,363 @@
     </button>
 
     <script>
+        // 全局变量存储动效状态
+        let yellowFlowerEffects = {
+            stars: null,
+            particles: null,
+            cursorGlow: null,
+            isActive: false
+        };
+
         // 页面加载完成后执行
         document.addEventListener('DOMContentLoaded', function() {
             loadArticleDetail();
             initScrollEffects();
-            initSakuraEffect();
+            loadThemeSettings();
+            
+            // 监听主题变化
+            initThemeChangeListener();
         });
+
+        // 加载主题设置
+        async function loadThemeSettings() {
+            try {
+                const response = await fetch('/api/content');
+                const data = await response.json();
+                
+                if (data && data.settings && data.settings.appearance && data.settings.appearance.theme) {
+                    const theme = data.settings.appearance.theme;
+                    applyTheme(theme);
+                }
+            } catch (error) {
+                console.error('加载主题设置失败:', error);
+                // 默认使用樱花效果
+                initSakuraEffect();
+            }
+        }
+
+        // 初始化主题变化监听器
+        function initThemeChangeListener() {
+            let lastTheme = null;
+            
+            // 定期检查主题变化
+            setInterval(async () => {
+                try {
+                    const response = await fetch('/api/content');
+                    const data = await response.json();
+                    
+                    if (data && data.settings && data.settings.appearance && data.settings.appearance.theme) {
+                        const currentTheme = data.settings.appearance.theme;
+                        
+                        // 检查主题是否发生变化
+                        if (!lastTheme || lastTheme.name !== currentTheme.name) {
+                            console.log(`详情页检测到主题变化: ${currentTheme.name}`);
+                            lastTheme = currentTheme;
+                            applyTheme(currentTheme);
+                        }
+                    }
+                } catch (error) {
+                    console.error('检查主题变化失败:', error);
+                }
+            }, 1000); // 每秒检查一次
+        }
+
+        // 应用主题
+        function applyTheme(theme) {
+            if (theme && theme.name) {
+                document.documentElement.setAttribute('data-theme', theme.name);
+                console.log(`详情页已应用主题: ${theme.name}`);
+                
+                // 移除所有动效
+                if (yellowFlowerEffects.isActive) {
+                    removeYellowFlowerEffects();
+                }
+                // 隐藏樱花容器
+                const sakuraContainer = document.querySelector('.sakura-container');
+                if (sakuraContainer) {
+                    sakuraContainer.style.display = 'none';
+                }
+                // 移除雪花/星星容器（全部强制清理，避免残留）
+                const snowContainer = document.getElementById('white-snowflakes');
+                if (snowContainer) snowContainer.remove();
+                const starContainer = document.getElementById('yellow-stars-flat');
+                if (starContainer) starContainer.remove();
+                // 只保留黄色花朵和黑色樱花主题的动效，明亮主题不飘落任何元素
+                if (theme.name === '黄色花朵') {
+                    createYellowStarsFlat();
+                } else if (theme.name === '黑色樱花') {
+                    if (sakuraContainer) sakuraContainer.style.display = 'block';
+                    initSakuraEffect();
+                }
+            }
+        }
+
+        // 初始化黄色花朵主题动效
+        function initYellowFlowerEffects() {
+            if (yellowFlowerEffects.isActive) return;
+            
+            console.log('详情页初始化黄色花朵主题动效');
+            yellowFlowerEffects.isActive = true;
+            
+            // 创建星星背景
+            createYellowStars();
+            
+            // 创建粒子效果
+            createYellowParticles();
+            
+            // 创建花瓣飘落效果
+            createYellowPetals();
+            
+            // 创建鼠标跟随光圈
+            createCursorGlow();
+        }
+
+        // 移除黄色花朵主题动效
+        function removeYellowFlowerEffects() {
+            if (!yellowFlowerEffects.isActive) return;
+            
+            console.log('详情页移除黄色花朵主题动效');
+            yellowFlowerEffects.isActive = false;
+            
+            // 移除星星
+            if (yellowFlowerEffects.stars) {
+                yellowFlowerEffects.stars.remove();
+                yellowFlowerEffects.stars = null;
+            }
+            
+            // 移除粒子
+            if (yellowFlowerEffects.particles) {
+                yellowFlowerEffects.particles.remove();
+                yellowFlowerEffects.particles = null;
+            }
+            
+            // 移除花瓣
+            if (yellowFlowerEffects.petals) {
+                yellowFlowerEffects.petals.remove();
+                yellowFlowerEffects.petals = null;
+            }
+            
+            // 移除鼠标光圈
+            if (yellowFlowerEffects.cursorGlow) {
+                yellowFlowerEffects.cursorGlow.remove();
+                yellowFlowerEffects.cursorGlow = null;
+            }
+        }
+
+        // 创建黄色星星背景
+        function createYellowStars() {
+            const starsContainer = document.createElement('div');
+            starsContainer.id = 'yellow-stars';
+            starsContainer.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 1;
+                background-image: 
+                    radial-gradient(circle at 15% 25%, #f4d03f 2px, transparent 2px),
+                    radial-gradient(circle at 85% 15%, #f7dc6f 1.5px, transparent 1.5px),
+                    radial-gradient(circle at 25% 60%, #f4d03f 2.5px, transparent 2.5px),
+                    radial-gradient(circle at 75% 80%, #f7dc6f 2px, transparent 2px),
+                    radial-gradient(circle at 40% 35%, #f4d03f 1px, transparent 1px),
+                    radial-gradient(circle at 90% 45%, #f7dc6f 2px, transparent 2px);
+                background-size: 
+                    200px 200px, 150px 150px, 180px 180px, 220px 220px, 120px 120px, 160px 160px;
+                background-position: 
+                    0 0, 50px 30px, 100px 80px, 150px 120px, 200px 20px, 30px 150px;
+                background-attachment: fixed;
+            `;
+            
+            document.body.appendChild(starsContainer);
+            yellowFlowerEffects.stars = starsContainer;
+            
+            // 添加动态星星
+            for (let i = 0; i < 20; i++) {
+                const star = document.createElement('div');
+                star.className = 'yellow-star';
+                star.style.cssText = `
+                    position: absolute;
+                    width: ${Math.random() * 4 + 2}px;
+                    height: ${Math.random() * 4 + 2}px;
+                    background: #f4d03f;
+                    border-radius: 50%;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    animation: star-twinkle ${Math.random() * 3 + 2}s infinite ease-in-out;
+                    animation-delay: ${Math.random() * 2}s;
+                `;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // 创建黄色粒子效果
+        function createYellowParticles() {
+            const particlesContainer = document.createElement('div');
+            particlesContainer.id = 'yellow-particles';
+            particlesContainer.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 2;
+            `;
+            
+            document.body.appendChild(particlesContainer);
+            yellowFlowerEffects.particles = particlesContainer;
+            
+            // 创建粒子
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'yellow-particle';
+                particle.style.cssText = `
+                    position: absolute;
+                    width: ${Math.random() * 3 + 1}px;
+                    height: ${Math.random() * 3 + 1}px;
+                    background: #f7dc6f;
+                    border-radius: 50%;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    animation: particle-float ${Math.random() * 4 + 3}s infinite linear;
+                    animation-delay: ${Math.random() * 2}s;
+                    opacity: ${Math.random() * 0.6 + 0.4};
+                `;
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // 创建黄色星星飘落效果
+        function createYellowPetals() {
+            const starsContainer = document.createElement('div');
+            starsContainer.id = 'yellow-stars-falling';
+            starsContainer.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 3;
+            `;
+            
+            document.body.appendChild(starsContainer);
+            yellowFlowerEffects.petals = starsContainer;
+            
+            // 创建星星
+            for (let i = 0; i < 25; i++) {
+                const star = document.createElement('div');
+                star.className = 'yellow-star-falling';
+                
+                // 随机星星大小和类型
+                const size = Math.random() * 20 + 8;
+                const starType = Math.floor(Math.random() * 3); // 0-2 三种星星类型
+                
+                let starStyle = '';
+                if (starType === 0) {
+                    // 五角星
+                    starStyle = `
+                        width: ${size}px;
+                        height: ${size}px;
+                        background: radial-gradient(circle at 30% 30%, #fef9e7 0%, #f7dc6f 40%, #f4d03f 70%, #f39c12 100%);
+                        clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+                        box-shadow: 
+                            inset 1px 1px 2px rgba(255, 255, 255, 0.6),
+                            inset -1px -1px 2px rgba(0, 0, 0, 0.2),
+                            0 0 10px rgba(244, 208, 63, 0.8),
+                            0 0 20px rgba(244, 208, 63, 0.4);
+                        border: 1px solid rgba(244, 208, 63, 0.8);
+                    `;
+                } else if (starType === 1) {
+                    // 六角星
+                    starStyle = `
+                        width: ${size}px;
+                        height: ${size}px;
+                        background: radial-gradient(circle at 40% 40%, #fef9e7 0%, #f7dc6f 50%, #f4d03f 80%, #f39c12 100%);
+                        clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+                        box-shadow: 
+                            inset 1px 1px 2px rgba(255, 255, 255, 0.6),
+                            inset -1px -1px 2px rgba(0, 0, 0, 0.2),
+                            0 0 10px rgba(244, 208, 63, 0.8),
+                            0 0 20px rgba(244, 208, 63, 0.4);
+                        border: 1px solid rgba(244, 208, 63, 0.8);
+                    `;
+                } else {
+                    // 菱形星
+                    starStyle = `
+                        width: ${size}px;
+                        height: ${size}px;
+                        background: radial-gradient(circle at 35% 35%, #fef9e7 0%, #f7dc6f 45%, #f4d03f 75%, #f39c12 100%);
+                        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+                        box-shadow: 
+                            inset 1px 1px 2px rgba(255, 255, 255, 0.6),
+                            inset -1px -1px 2px rgba(0, 0, 0, 0.2),
+                            0 0 10px rgba(244, 208, 63, 0.8),
+                            0 0 20px rgba(244, 208, 63, 0.4);
+                        border: 1px solid rgba(244, 208, 63, 0.8);
+                    `;
+                }
+                
+                star.style.cssText = `
+                    position: absolute;
+                    ${starStyle}
+                    left: ${Math.random() * 120 - 10}%;
+                    top: -40px;
+                    animation: star-fall-${starType} ${Math.random() * 12 + 10}s linear infinite;
+                    animation-delay: ${Math.random() * 8}s;
+                    opacity: ${Math.random() * 0.8 + 0.2};
+                    transform: rotate(${Math.random() * 360}deg);
+                    filter: brightness(${Math.random() * 0.4 + 0.8}) drop-shadow(0 0 5px rgba(244, 208, 63, 0.6));
+                `;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // 创建鼠标跟随光圈
+        function createCursorGlow() {
+            // 触摸设备不显示鼠标跟随效果
+            if ('ontouchstart' in window) {
+                return;
+            }
+            
+            const cursorGlow = document.createElement('div');
+            cursorGlow.className = 'cursor-glow';
+            cursorGlow.style.cssText = `
+                position: fixed;
+                width: 40px;
+                height: 40px;
+                background: radial-gradient(circle, rgba(244, 208, 63, 0.3) 0%, transparent 70%);
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 9999;
+                transition: all 0.1s ease;
+                mix-blend-mode: screen;
+            `;
+            
+            document.body.appendChild(cursorGlow);
+            yellowFlowerEffects.cursorGlow = cursorGlow;
+            
+            // 鼠标移动事件
+            document.addEventListener('mousemove', function(e) {
+                cursorGlow.style.left = e.clientX - 20 + 'px';
+                cursorGlow.style.top = e.clientY - 20 + 'px';
+            });
+            
+            // 悬停效果
+            const hoverElements = document.querySelectorAll('.action-btn, button, a');
+            hoverElements.forEach(element => {
+                element.addEventListener('mouseenter', function() {
+                    cursorGlow.style.transform = 'scale(1.5)';
+                    cursorGlow.style.background = 'radial-gradient(circle, rgba(244, 208, 63, 0.5) 0%, transparent 70%)';
+                });
+                element.addEventListener('mouseleave', function() {
+                    cursorGlow.style.transform = 'scale(1)';
+                    cursorGlow.style.background = 'radial-gradient(circle, rgba(244, 208, 63, 0.3) 0%, transparent 70%)';
+                });
+            });
+        }
 
         // 加载文章详情
         async function loadArticleDetail() {
@@ -230,8 +581,6 @@
             }
         }
 
-
-
         // 格式化日期
         function formatDate(dateString) {
             if (!dateString) return '未知日期';
@@ -301,8 +650,6 @@
             window.location.href = '/';
         }
 
-
-
         // 分享文章
         function shareArticle() {
             if (navigator.share) {
@@ -357,6 +704,48 @@
                     backToTopBtn.style.visibility = 'hidden';
                 }
             });
+        }
+
+        // 创建黄色五角星飘落效果
+        function createYellowStarsFlat() {
+            const starsContainer = document.createElement('div');
+            starsContainer.id = 'yellow-stars-flat';
+            starsContainer.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                pointer-events: none;
+                z-index: 3;
+            `;
+            document.body.appendChild(starsContainer);
+            yellowFlowerEffects.petals = starsContainer;
+            // 生成5~8颗五角星，分布在左右两侧
+            const count = Math.floor(Math.random() * 4) + 5; // 5~8颗
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'yellow-star-flat';
+                const size = Math.random() * 24 + 12;
+                // 左右两侧分布
+                const left = (i % 2 === 0)
+                    ? (Math.random() * 8 + 2) // 2vw~10vw
+                    : (Math.random() * 8 + 90); // 90vw~98vw
+                const duration = (Math.random() * 4 + 6) * 2; // 动画时长加倍
+                const delay = Math.random() * 4;
+                star.style.cssText = `
+                    position: absolute;
+                    left: ${left}vw;
+                    top: -40px;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: #FFD600;
+                    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+                    opacity: 1;
+                    animation: star-flat-fall ${duration}s linear ${delay}s infinite;
+                `;
+                starsContainer.appendChild(star);
+            }
         }
 
         // 樱花效果

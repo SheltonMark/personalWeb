@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页 - 素雅明亮主题模拟</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #f0f9ff 50%, #fff5f5 100%);
+            background-attachment: fixed;
+            color: #2d3748;
+            overflow-x: hidden;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* 装饰性背景元素 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 182, 193, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(173, 216, 230, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(255, 192, 203, 0.08) 0%, transparent 50%);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* 浮动装饰元素 */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 182, 193, 0.3);
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 20%;
+            right: 15%;
+            width: 12px;
+            height: 12px;
+            background: rgba(173, 216, 230, 0.3);
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 192, 203, 0.4);
+            animation-delay: 4s;
+        }
+
+        .floating-element:nth-child(4) {
+            top: 40%;
+            right: 30%;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 182, 193, 0.15);
+            animation-delay: 1s;
+            animation-duration: 10s;
+        }
+
+        .floating-element:nth-child(5) {
+            top: 70%;
+            left: 70%;
+            width: 10px;
+            height: 10px;
+            background: rgba(173, 216, 230, 0.12);
+            animation-delay: 6s;
+            animation-duration: 12s;
+        }
+
+        .floating-element:nth-child(6) {
+            top: 60%;
+            left: 40%;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 192, 203, 0.18);
+            animation-delay: 3s;
+            animation-duration: 8s;
+        }
+
+        .floating-element:nth-child(7) {
+            bottom: 20%;
+            right: 10%;
+            width: 7px;
+            height: 7px;
+            background: rgba(255, 182, 193, 0.1);
+            animation-delay: 5s;
+            animation-duration: 14s;
+        }
+
+        .floating-element:nth-child(8) {
+            top: 25%;
+            left: 60%;
+            width: 5px;
+            height: 5px;
+            background: rgba(173, 216, 230, 0.08);
+            animation-delay: 7s;
+            animation-duration: 16s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(10px) rotate(240deg); }
+        }
+
+        /* 背景流动动画 */
+        body {
+            background: linear-gradient(135deg, #ffeef8 0%, #f0f9ff 50%, #fff5f5 100%);
+            background-size: 300% 300%;
+            animation: backgroundFlow 25s ease-in-out infinite;
+        }
+
+        @keyframes backgroundFlow {
+            0% { 
+                background-position: 0% 50%;
+            }
+            50% { 
+                background-position: 100% 50%;
+            }
+            100% { 
+                background-position: 0% 50%;
+            }
+        }
+
+        /* 音乐播放器 - 明亮主题 */
+        .music-player {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .music-btn {
+            background: linear-gradient(45deg, #ff8fab, #ffb3d9);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(255, 139, 171, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            animation: gentlePulse 3s ease-in-out infinite;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.2) rotate(15deg);
+            box-shadow: 0 8px 30px rgba(255, 139, 171, 0.6);
+        }
+
+        .music-btn.playing {
+            animation: musicSpin 2s linear infinite;
+        }
+
+        @keyframes gentlePulse {
+            0%, 100% { 
+                box-shadow: 0 4px 20px rgba(255, 139, 171, 0.3);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 6px 25px rgba(255, 139, 171, 0.4);
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes musicSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 导航栏 - 明亮主题 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 15px 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 182, 193, 0.2);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+            animation: slideDownIn 0.8s ease-out;
+        }
+
+        @keyframes slideDownIn {
+            from { 
+                transform: translateY(-100%); 
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0); 
+                opacity: 1;
+            }
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 600;
+            background: linear-gradient(45deg, #e91e63, #ff8fab, #ffb3d9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: logoGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            0% { 
+                filter: brightness(1) drop-shadow(0 0 5px rgba(233, 30, 99, 0.3));
+                transform: scale(1);
+            }
+            100% { 
+                filter: brightness(1.2) drop-shadow(0 0 10px rgba(233, 30, 99, 0.5));
+                transform: scale(1.02);
+            }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            padding: 8px 16px;
+            border-radius: 25px;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(233, 30, 99, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-link:hover::before {
+            left: 100%;
+        }
+
+        .nav-link:hover {
+            color: #e91e63;
+            background: rgba(255, 182, 193, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.1);
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            margin-top: 80px;
+        }
+
+        /* 英雄区域 - 明亮主题 */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.1) 0%, rgba(173, 216, 230, 0.1) 50%, rgba(255, 192, 203, 0.1) 100%);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            color: #2d3748;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+
+        .title-line {
+            display: block;
+            background: linear-gradient(45deg, #e91e63, #ff8fab, #ffb3d9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .title-line:first-child {
+            animation: typeWriter 2s steps(20, end) 1s forwards, removeCursor 0.1s ease-in 3s forwards;
+            border-right: 2px solid #e91e63;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 0;
+        }
+
+        .title-line:last-child {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 2.5s forwards;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #718096;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 3s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes typeWriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes removeCursor {
+            from { border-right-color: #e91e63; }
+            to { border-right-color: transparent; }
+        }
+
+        /* 区域样式 */
+        .section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            position: relative;
+            color: #2d3748;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .section-title.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .title-icon {
+            font-size: 3rem;
+            margin-right: 20px;
+            filter: drop-shadow(0 0 10px rgba(255, 139, 171, 0.3));
+            animation: iconBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes iconBounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .title-subtitle {
+            display: block;
+            font-size: 1rem;
+            color: #e91e63;
+            font-weight: 300;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+
+        /* 卡片网格 */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        /* 卡片样式 - 明亮主题 */
+        .card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 182, 193, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            opacity: 0;
+            transform: translateY(50px);
+            animation: cardFloat 6s ease-in-out infinite;
+        }
+
+        .card.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 182, 193, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 25px 50px rgba(233, 30, 99, 0.15);
+            border-color: rgba(255, 139, 171, 0.4);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .card:hover h3 {
+            color: #e91e63;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+            color: #e91e63;
+        }
+
+        .card p {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .card-date {
+            font-size: 0.9rem;
+            color: #e91e63;
+            font-weight: 500;
+        }
+
+        /* 标签样式 - 明亮主题 */
+        .tag {
+            background: rgba(255, 182, 193, 0.2);
+            color: #e91e63;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(255, 182, 193, 0.3);
+            margin: 2px;
+            display: inline-block;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .tag:hover {
+            background: rgba(255, 182, 193, 0.4);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 12px rgba(233, 30, 99, 0.2);
+            border-color: rgba(233, 30, 99, 0.4);
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        /* 人物卡片特殊样式 */
+        .people-card {
+            text-align: center;
+        }
+
+        .card-avatar {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid rgba(255, 182, 193, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .card-avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(233, 30, 99, 0.3), transparent);
+            opacity: 0;
+            transition: all 0.5s;
+            animation: avatarShine 4s ease-in-out infinite;
+        }
+
+        @keyframes avatarShine {
+            0%, 100% { opacity: 0; transform: rotate(0deg); }
+            50% { opacity: 1; transform: rotate(180deg); }
+        }
+
+        .people-card:hover .card-avatar {
+            transform: scale(1.15) rotate(5deg);
+            border-color: rgba(233, 30, 99, 0.6);
+            box-shadow: 0 8px 25px rgba(233, 30, 99, 0.3);
+        }
+
+        .card-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .people-card:hover .card-avatar img {
+            transform: scale(1.1);
+        }
+
+        /* 图片卡片样式 */
+        .card-image {
+            width: 100%;
+            height: 200px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover .card-image img {
+            transform: scale(1.1) rotate(1deg);
+            filter: brightness(1.1) saturate(1.1);
+        }
+
+        /* 查看更多按钮 */
+        .view-more-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .view-more-btn {
+            background: linear-gradient(45deg, #e91e63, #ff8fab);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .view-more-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transition: all 0.5s;
+            transform: translate(-50%, -50%);
+        }
+
+        .view-more-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .view-more-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(233, 30, 99, 0.5);
+        }
+
+        /* 页脚 */
+        .footer {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px 0;
+            text-align: center;
+            color: #4a5568;
+            border-top: 1px solid rgba(255, 182, 193, 0.2);
+            backdrop-filter: blur(20px);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 浮动装饰元素 -->
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <!-- 音乐播放器 -->
+    <div class="music-player">
+        <button class="music-btn" title="播放/暂停背景音乐">
+            <i class="fas fa-music"></i>
+        </button>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text">✿ 我的小世界 ✿</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#growth" class="nav-link">溯·成长</a></li>
+                <li><a href="#people" class="nav-link">铭·相遇</a></li>
+                <li><a href="#museum" class="nav-link">凝·岁月</a></li>
+                <li><a href="#travel" class="nav-link">触·世界</a></li>
+                <li><a href="#photos" class="nav-link">记忆相册</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 主页面内容 -->
+    <main class="main-content">
+        <!-- 欢迎区域 -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="title-line">记录生活的美好</span>
+                    <span class="title-line">珍藏回忆的片段</span>
+                </h1>
+                <p class="hero-subtitle">在这里，每一个故事都值得被温柔对待</p>
+            </div>
+        </section>
+
+        <!-- Part 1: 溯·成长 -->
+        <section id="growth" class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="title-icon">🌱</span>
+                    溯·成长
+                    <span class="title-subtitle">Growth Journey</span>
+                </h2>
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-icon">📚</span>
+                        </div>
+                        <h3>大学时光</h3>
+                        <p>在象牙塔里度过的美好时光，每一本书、每一堂课都是成长的印记。那些深夜图书馆的灯光，见证了我的努力与收获。</p>
+                        <div class="card-tags">
+                            <span class="tag">学习</span>
+                            <span class="tag">成长</span>
+                            <span class="tag">青春</span>
+                        </div>
+                        <div class="card-date">2020-2024</div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-icon">💼</span>
+                        </div>
+                        <h3>初入职场</h3>
+                        <p>从校园步入社会的那一刻，世界突然变得宽广。每一次挑战都是学习，每一次失败都是成长的阶梯。</p>
+                        <div class="card-tags">
+                            <span class="tag">工作</span>
+                            <span class="tag">挑战</span>
+                            <span class="tag">学习</span>
+                        </div>
+                        <div class="card-date">2024-至今</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-icon">🎨</span>
+                        </div>
+                        <h3>艺术启蒙</h3>
+                        <p>通过画笔和色彩，我学会了用另一种语言表达内心。每一幅作品都承载着那个时刻的情感和思考。</p>
+                        <div class="card-tags">
+                            <span class="tag">艺术</span>
+                            <span class="tag">创作</span>
+                            <span class="tag">表达</span>
+                        </div>
+                        <div class="card-date">2019-2022</div>
+                    </div>
+                </div>
+                <div class="view-more-container">
+                    <button class="view-more-btn">
+                        <i class="fas fa-chevron-down"></i>
+                        查看更多
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 2: 铭·相遇 -->
+        <section id="people" class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="title-icon">👥</span>
+                    铭·相遇
+                    <span class="title-subtitle">Important People</span>
+                </h2>
+                <div class="cards-grid">
+                    <div class="card people-card">
+                        <div class="card-avatar">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face" alt="好友">
+                        </div>
+                        <h3>我的挚友</h3>
+                        <p>从高中就认识的好朋友，陪伴我走过了人生中最重要的时光。她的乐观和善良总是能温暖我的心。</p>
+                        <div class="card-tags">
+                            <span class="tag">友谊</span>
+                            <span class="tag">陪伴</span>
+                            <span class="tag">温暖</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card people-card">
+                        <div class="card-avatar">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" alt="导师">
+                        </div>
+                        <h3>我的导师</h3>
+                        <p>他不仅在学术上给了我指导，更在人生道路上为我指明了方向。严谨的治学态度深深影响着我。</p>
+                        <div class="card-tags">
+                            <span class="tag">导师</span>
+                            <span class="tag">指导</span>
+                            <span class="tag">影响</span>
+                        </div>
+                    </div>
+
+                    <div class="card people-card">
+                        <div class="card-avatar">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" alt="同事">
+                        </div>
+                        <h3>团队伙伴</h3>
+                        <p>工作中遇到的优秀同事，我们一起奋斗、一起成长。她的专业精神和团队合作意识让我受益匪浅。</p>
+                        <div class="card-tags">
+                            <span class="tag">同事</span>
+                            <span class="tag">合作</span>
+                            <span class="tag">专业</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="view-more-container">
+                    <button class="view-more-btn">
+                        <i class="fas fa-chevron-down"></i>
+                        查看更多
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 3: 凝·岁月 -->
+        <section id="museum" class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="title-icon">🏛️</span>
+                    凝·岁月
+                    <span class="title-subtitle">Museum Memories</span>
+                </h2>
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="https://images.unsplash.com/photo-1566552881560-0be862a7c445?w=400&h=200&fit=crop" alt="故宫博物院">
+                        </div>
+                        <h3>故宫博物院</h3>
+                        <p>走过红墙黄瓦，仿佛穿越了时空。每一件文物都诉说着历史的故事，让人不禁感叹文明的厚重。</p>
+                        <div class="card-tags">
+                            <span class="tag">历史</span>
+                            <span class="tag">文化</span>
+                            <span class="tag">传统</span>
+                        </div>
+                        <div class="card-date">2023年春</div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=400&h=200&fit=crop" alt="艺术馆">
+                        </div>
+                        <h3>现代艺术馆</h3>
+                        <p>现代艺术的魅力在于它的自由和创新，每一幅作品都是艺术家内心的写照，激发着我的创作灵感。</p>
+                        <div class="card-tags">
+                            <span class="tag">现代艺术</span>
+                            <span class="tag">创新</span>
+                            <span class="tag">灵感</span>
+                        </div>
+                        <div class="card-date">2023年夏</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=200&fit=crop" alt="自然博物馆">
+                        </div>
+                        <h3>自然博物馆</h3>
+                        <p>大自然的奇妙在这里一览无余，从微观的细胞结构到宏观的星空宇宙，让人敬畏自然的伟大。</p>
+                        <div class="card-tags">
+                            <span class="tag">自然</span>
+                            <span class="tag">科学</span>
+                            <span class="tag">探索</span>
+                        </div>
+                        <div class="card-date">2023年秋</div>
+                    </div>
+                </div>
+                <div class="view-more-container">
+                    <button class="view-more-btn">
+                        <i class="fas fa-chevron-down"></i>
+                        查看更多
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 我的小清新个人空间 | 用心记录，温柔生活 🌸</p>
+        </div>
+    </footer>
+
+    <script>
+        // 音乐按钮交互
+        function initMusicButton() {
+            const musicBtn = document.querySelector('.music-btn');
+            musicBtn.addEventListener('click', function() {
+                this.classList.toggle('playing');
+                const icon = this.querySelector('i');
+                if (this.classList.contains('playing')) {
+                    icon.className = 'fas fa-pause';
+                } else {
+                    icon.className = 'fas fa-music';
+                }
+            });
+        }
+
+        // 滚动触发动画
+        function initScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, observerOptions);
+
+            // 观察需要动画的元素
+            document.querySelectorAll('.section-title, .card').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // 卡片延迟动画
+        function initCardAnimations() {
+            document.querySelectorAll('.cards-grid').forEach(grid => {
+                const cards = grid.querySelectorAll('.card');
+                cards.forEach((card, index) => {
+                    card.style.transitionDelay = `${index * 0.1}s`;
+                });
+            });
+        }
+
+        // 平滑滚动
+        function initSmoothScroll() {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ 
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        // 视差滚动效果
+        function initParallaxEffect() {
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const floatingElements = document.querySelectorAll('.floating-element');
+                
+                floatingElements.forEach((el, index) => {
+                    const speed = 0.3 + (index * 0.1);
+                    el.style.transform = `translateY(${scrolled * speed}px)`;
+                });
+            });
+        }
+
+        // 添加鼠标跟随光效
+        function initCursorEffect() {
+            const cursor = document.createElement('div');
+            cursor.className = 'cursor-glow';
+            cursor.style.cssText = `
+                position: fixed;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(233, 30, 99, 0.3), transparent);
+                pointer-events: none;
+                z-index: 9999;
+                transition: transform 0.1s ease;
+            `;
+            document.body.appendChild(cursor);
+            
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX - 10 + 'px';
+                cursor.style.top = e.clientY - 10 + 'px';
+            });
+        }
+
+        // 页面加载完成后初始化所有功能
+        document.addEventListener('DOMContentLoaded', function() {
+            initMusicButton();
+            initScrollAnimations();
+            initCardAnimations();
+            initSmoothScroll();
+            initParallaxEffect();
+            initCursorEffect();
+        });
+
+        // 页面加载动画
+        window.addEventListener('load', function() {
+            document.body.classList.add('loaded');
+        });
+    </script>
+</body>
+</html> 

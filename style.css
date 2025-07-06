@@ -128,8 +128,6 @@ body {
     display: block;
 }
 
-
-
 /* Canvas樱花容器 */
 .sakura-container {
     position: fixed;
@@ -634,8 +632,6 @@ body {
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
 }
 
-
-
 @keyframes rotate-wall {
     from { transform: rotateY(0deg); }
     to { transform: rotateY(360deg); }
@@ -998,4 +994,348 @@ body {
 .card:nth-child(3) { animation-delay: 0.3s; }
 .card:nth-child(4) { animation-delay: 0.4s; }
 .card:nth-child(5) { animation-delay: 0.5s; }
-.card:nth-child(6) { animation-delay: 0.6s; } 
+.card:nth-child(6) { animation-delay: 0.6s; }
+
+/* 黄色花朵主题专属样式和动画 */
+[data-theme="黄色花朵"] body {
+    background: #fdfcf8;
+    background-image:
+        radial-gradient(circle at 15% 25%, #f4d03f 2px, transparent 2px),
+        radial-gradient(circle at 85% 15%, #f7dc6f 1.5px, transparent 1.5px),
+        radial-gradient(circle at 25% 60%, #f4d03f 2.5px, transparent 2.5px),
+        radial-gradient(circle at 75% 80%, #f7dc6f 2px, transparent 2px),
+        radial-gradient(circle at 40% 35%, #f4d03f 1px, transparent 1px),
+        radial-gradient(circle at 90% 45%, #f7dc6f 2px, transparent 2px);
+    background-size:
+        200px 200px, 150px 150px, 180px 180px, 220px 220px, 120px 120px, 160px 160px;
+    background-position:
+        0 0, 50px 30px, 100px 80px, 150px 120px, 200px 20px, 30px 150px;
+    background-attachment: fixed;
+    color: #2c3e50;
+}
+
+[data-theme="黄色花朵"] .navbar {
+    background: rgba(253, 252, 248, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(244, 208, 63, 0.2);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+    animation: slideDown 0.8s ease-out;
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+[data-theme="黄色花朵"] .logo-text {
+    background: linear-gradient(45deg, #d35400, #f39c12, #f4d03f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: logo-glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes logo-glow {
+    0% { filter: brightness(1) drop-shadow(0 0 5px rgba(244, 208, 63, 0.5)); }
+    100% { filter: brightness(1.2) drop-shadow(0 0 10px rgba(244, 208, 63, 0.8)); }
+}
+
+[data-theme="黄色花朵"] .nav-link {
+    color: #2c3e50;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 8px 16px;
+    border-radius: 25px;
+    position: relative;
+    overflow: hidden;
+}
+
+[data-theme="黄色花朵"] .nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(244, 208, 63, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+[data-theme="黄色花朵"] .nav-link:hover::before {
+    left: 100%;
+}
+
+[data-theme="黄色花朵"] .nav-link:hover {
+    color: #d35400;
+    background: rgba(244, 208, 63, 0.1);
+    transform: translateY(-2px);
+}
+
+[data-theme="黄色花朵"] .nav-link::after {
+    display: none;
+}
+
+[data-theme="黄色花朵"] .nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+/* 音乐按钮黄色主题 */
+[data-theme="黄色花朵"] .music-btn {
+    background: linear-gradient(45deg, #f7dc6f, #f4d03f);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    color: #2c3e50;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(244, 208, 63, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: gentle-pulse 3s ease-in-out infinite;
+}
+
+[data-theme="黄色花朵"] .music-btn:hover {
+    transform: scale(1.2) rotate(15deg);
+    box-shadow: 0 8px 30px rgba(244, 208, 63, 0.6);
+}
+
+[data-theme="黄色花朵"] .music-btn.playing {
+    animation: music-spin 2s linear infinite;
+}
+
+@keyframes gentle-pulse {
+    0%, 100% { box-shadow: 0 4px 20px rgba(244, 208, 63, 0.3); }
+    50% { box-shadow: 0 4px 30px rgba(244, 208, 63, 0.5); }
+}
+
+@keyframes music-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 星星和粒子动画容器 */
+.yellow-particles-container {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+}
+.yellow-particle {
+    position: absolute;
+    background: #f4d03f;
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: float-particle 8s ease-in-out infinite;
+}
+@keyframes float-particle {
+    0%, 100% { transform: translateY(0px) translateX(0px) scale(0.8); opacity: 0.6; }
+    25% { transform: translateY(-20px) translateX(10px) scale(1); opacity: 1; }
+    50% { transform: translateY(-40px) translateX(-10px) scale(1.2); opacity: 0.8; }
+    75% { transform: translateY(-20px) translateX(15px) scale(0.9); opacity: 0.9; }
+}
+.yellow-stars {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 2;
+}
+.yellow-star {
+    position: absolute;
+    color: #f4d03f;
+    font-size: 16px;
+    animation: twinkle-move 6s ease-in-out infinite;
+}
+@keyframes twinkle-move {
+    0%, 100% { opacity: 0.4; transform: translateY(0px) rotate(0deg) scale(1); filter: blur(0px); }
+    25% { opacity: 1; transform: translateY(-10px) rotate(90deg) scale(1.3); filter: blur(0.5px); }
+    50% { opacity: 0.8; transform: translateY(-5px) rotate(180deg) scale(0.8); filter: blur(1px); }
+    75% { opacity: 0.9; transform: translateY(-15px) rotate(270deg) scale(1.1); filter: blur(0.3px); }
+}
+
+/* 鼠标跟随光圈 */
+.yellow-cursor-glow {
+    position: fixed;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(244, 208, 63, 0.3), transparent);
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+}
+
+/* 黄色花朵主题动画效果 */
+@keyframes star-twinkle {
+    0%, 100% { 
+        opacity: 0.3; 
+        transform: scale(1) rotate(0deg); 
+    }
+    50% { 
+        opacity: 1; 
+        transform: scale(1.2) rotate(180deg); 
+    }
+}
+
+@keyframes particle-float {
+    0% { 
+        transform: translateY(0px) translateX(0px); 
+        opacity: 0.4; 
+    }
+    25% { 
+        transform: translateY(-30px) translateX(15px); 
+        opacity: 0.8; 
+    }
+    50% { 
+        transform: translateY(-60px) translateX(-10px); 
+        opacity: 1; 
+    }
+    75% { 
+        transform: translateY(-30px) translateX(20px); 
+        opacity: 0.6; 
+    }
+    100% { 
+        transform: translateY(0px) translateX(0px); 
+        opacity: 0.4; 
+    }
+}
+
+/* 黄色花朵主题卡片悬停效果增强 */
+[data-theme="黄色花朵"] .card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(244, 208, 63, 0.2);
+    border-color: #f4d03f;
+}
+
+[data-theme="黄色花朵"] .card::before {
+    background: linear-gradient(135deg, rgba(244, 208, 63, 0.1), rgba(247, 220, 111, 0.05));
+}
+
+[data-theme="黄色花朵"] .card:hover::before {
+    background: linear-gradient(135deg, rgba(244, 208, 63, 0.2), rgba(247, 220, 111, 0.1));
+}
+
+/* 黄色花朵主题导航栏增强 */
+[data-theme="黄色花朵"] .nav-link {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+[data-theme="黄色花朵"] .nav-link:hover {
+    color: #f4d03f;
+    text-shadow: 0 0 10px rgba(244, 208, 63, 0.3);
+}
+
+[data-theme="黄色花朵"] .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(45deg, #f7dc6f, #f4d03f);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+[data-theme="黄色花朵"] .nav-link:hover::after {
+    width: 100%;
+    box-shadow: 0 0 10px rgba(244, 208, 63, 0.5);
+}
+
+/* 黄色花朵主题按钮增强 */
+[data-theme="黄色花朵"] .view-more-btn {
+    background: linear-gradient(45deg, #f7dc6f, #f4d03f);
+    color: #2c3e50;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 15px rgba(244, 208, 63, 0.3);
+    transition: all 0.3s ease;
+}
+
+[data-theme="黄色花朵"] .view-more-btn:hover {
+    background: linear-gradient(45deg, #f4d03f, #f7dc6f);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(244, 208, 63, 0.5);
+    border-color: #f4d03f;
+}
+
+/* 黄色花朵主题页脚增强 */
+[data-theme="黄色花朵"] .footer {
+    background: rgba(253, 252, 248, 0.95);
+    border-top: 1px solid rgba(244, 208, 63, 0.2);
+    color: #2c3e50;
+}
+
+[data-theme="黄色花朵"] .footer p {
+    background: linear-gradient(45deg, #f7dc6f, #f4d03f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+[data-theme="明亮素雅"] .navbar {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 182, 193, 0.2);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+    animation: slideDownIn 0.8s ease-out;
+}
+
+@keyframes slideDownIn {
+    from { transform: translateY(-100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+[data-theme="明亮素雅"] .logo-text {
+    background: linear-gradient(45deg, #e91e63, #ff8fab, #ffb3d9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: logoGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes logoGlow {
+    0% { filter: brightness(1) drop-shadow(0 0 5px rgba(233, 30, 99, 0.3)); transform: scale(1); }
+    100% { filter: brightness(1.2) drop-shadow(0 0 10px rgba(233, 30, 99, 0.5)); transform: scale(1.02); }
+}
+
+[data-theme="明亮素雅"] .nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+[data-theme="明亮素雅"] .nav-link {
+    color: #4a5568;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    padding: 8px 16px;
+    border-radius: 25px;
+    overflow: hidden;
+}
+[data-theme="明亮素雅"] .nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(233, 30, 99, 0.2), transparent);
+    transition: left 0.5s;
+}
+[data-theme="明亮素雅"] .nav-link:hover::before {
+    left: 100%;
+}
+[data-theme="明亮素雅"] .nav-link:hover {
+    color: #e91e63;
+    background: rgba(255, 182, 193, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(233, 30, 99, 0.1);
+}
+[data-theme="明亮素雅"] .nav-link::after {
+    display: none;
+} 
