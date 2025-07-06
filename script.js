@@ -660,8 +660,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const musicStatus = document.getElementById('musicStatus');
         let isPlaying = false;
         
-        // 设置默认音量
-        bgMusic.volume = 0.5;
+        // 如果音乐功能被禁用，隐藏音乐控制器
+        if (window.musicEnabled === false) {
+            if (musicToggle) musicToggle.style.display = 'none';
+            if (musicStatus) musicStatus.style.display = 'none';
+            return;
+        }
+        
+        // 设置音量
+        if (typeof window.musicVolume === 'number') {
+            bgMusic.volume = window.musicVolume;
+        } else {
+            bgMusic.volume = 0.5; // 默认音量
+        }
         
         // 尝试自动播放
         function attemptAutoplay() {
@@ -698,7 +709,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 页面加载完成后尝试自动播放
         window.addEventListener('load', () => {
             // 检查是否启用自动播放
-            if (window.musicAutoplay !== false) {
+            if (window.musicEnabled !== false && window.musicAutoplay !== false) {
                 setTimeout(attemptAutoplay, 1000); // 延迟1秒确保页面完全加载
             }
         });
@@ -1146,14 +1157,35 @@ document.addEventListener('DOMContentLoaded', function() {
     // 动态加载音乐配置
     async function loadMusicConfig() {
         try {
-            const response = await fetch('/api/settings');
+            const response = await fetch('/api/content');
             const settings = await response.json();
             
-            if (settings.music) {
-                const musicSettings = settings.music;
+            // 获取音乐配置，优先使用新格式(settings.music)，如果不存在则使用旧格式(settings.media)
+            let musicSettings = settings.settings.music;
+            if (!musicSettings) {
+                const mediaSettings = settings.settings.media;
+                if (mediaSettings) {
+                    musicSettings = {
+                        enabled: true,
+                        autoplay: mediaSettings.autoPlay,
+                        loop: mediaSettings.loopPlay,
+                        volume: mediaSettings.defaultVolume / 100,
+                        url: mediaSettings.musicFile,
+                        title: "背景音乐",
+                        artist: ""
+                    };
+                }
+            }
+            
+            if (musicSettings) {
                 const bgMusic = document.getElementById('bgMusic');
                 const musicToggle = document.getElementById('musicToggle');
                 const musicStatus = document.getElementById('musicStatus');
+                
+                // 设置全局配置变量
+                window.musicEnabled = musicSettings.enabled;
+                window.musicAutoplay = musicSettings.autoplay;
+                window.musicVolume = musicSettings.volume !== undefined ? musicSettings.volume : 0.5;
                 
                 if (bgMusic) {
                     // 检查音乐功能是否启用
@@ -1174,9 +1206,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     
                     // 设置音量
-                    if (musicSettings.volume !== undefined) {
-                        bgMusic.volume = musicSettings.volume;
-                    }
+                    bgMusic.volume = window.musicVolume;
                     
                     // 设置循环播放
                     if (musicSettings.loop !== undefined) {
@@ -1189,15 +1219,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         const artistText = musicSettings.artist ? ` - ${musicSettings.artist}` : '';
                         musicStatus.title = `${titleText}${artistText}`;
                     }
-                    
-                    // 存储自动播放设置，供initMusicPlayer使用
-                    window.musicAutoplay = musicSettings.autoplay !== false;
                 }
             }
         } catch (error) {
             console.error('加载音乐配置失败:', error);
             // 如果加载失败，设置默认值
+            window.musicEnabled = true;
             window.musicAutoplay = true;
+            window.musicVolume = 0.5;
         }
     }
     
@@ -1285,6 +1314,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
             
             if (data && data.settings) {
+                // 重新加载音乐配置
+                await loadMusicConfig();
+                // 重新初始化音乐播放器
+                initMusicPlayer();
+                
+                // 应用其他系统设置
                 applySystemSettings(data.settings);
                 console.log('设置已实时更新');
                 

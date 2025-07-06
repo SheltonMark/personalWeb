@@ -9,12 +9,12 @@
     "basic": {
       "siteName": "我的小清新个人空间",
       "siteSubtitle": "记录生活的美好",
-      "navTitle": "✿ 我的小世界 ✿",
+      "navTitle": "✿ 我的小世界呀 ✿",
       "userName": "xx",
       "heroTitle": "记录生活的美好\n珍藏回忆的片段",
       "heroSubtitle": "在这里，每一个故事都值得被温柔对待",
       "userBio": "在这里，每一个故事都值得被温柔对待",
-      "footerText": "© 2025 xuan的个人空间 | 用心记录，温柔生活 🌸",
+      "footerText": "© 2025 花花的个人空间 | 用心记录，温柔生活 🌸",
       "avatar": "/src/uploads/avatar.jpg"
     },
     "sections": {
@@ -40,10 +40,6 @@
       "fontFamily": "noto"
     },
     "media": {
-      "musicFile": "src/uploads/bgm.mp3",
-      "autoPlay": true,
-      "loopPlay": true,
-      "defaultVolume": 50,
       "photoWall": {
         "photo1": {
           "src": "src/uploads/1 (1).jpg",
@@ -75,7 +71,7 @@
       "enabled": true,
       "autoplay": true,
       "loop": true,
-      "volume": 0.6,
+      "volume": 0.1,
       "url": "/src/uploads/bgm.mp3",
       "title": "网站背景音乐",
       "artist": "网站配乐"

@@ -1950,7 +1950,15 @@ class AdminSystem {
             document.getElementById('musicEnabled').checked = musicSettings.enabled !== false;
             document.getElementById('musicAutoplay').checked = musicSettings.autoplay !== false;
             document.getElementById('musicLoop').checked = musicSettings.loop !== false;
-            document.getElementById('musicVolume').value = musicSettings.volume || 0.5;
+            const volumeInput = document.getElementById('musicVolume');
+                if (volumeInput) {
+                    volumeInput.value = musicSettings.volume !== undefined ? musicSettings.volume : 0.5;
+                    // 同步更新显示的音量值
+                    const volumeValue = document.getElementById('volumeValue');
+                    if (volumeValue) {
+                        volumeValue.textContent = (volumeInput.value * 100).toFixed(0) + '%';
+                    }
+                }
             document.getElementById('volumeValue').textContent = ((musicSettings.volume || 0.5) * 100).toFixed(0) + '%';
             document.getElementById('musicUrl').value = musicSettings.url || '';
             document.getElementById('musicTitle').value = musicSettings.title || '';
