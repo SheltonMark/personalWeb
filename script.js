@@ -1319,6 +1319,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 // 重新初始化音乐播放器
                 initMusicPlayer();
                 
+                // 重新加载照片墙
+                await loadPhotoWall();
+                
                 // 应用其他系统设置
                 applySystemSettings(data.settings);
                 console.log('设置已实时更新');

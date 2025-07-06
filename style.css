@@ -647,6 +647,25 @@ body {
     box-shadow: 0 25px 60px rgba(255, 107, 157, 0.3);
 }
 
+/* 3D旋转控制样式 */
+.photo-wall.dragging {
+    cursor: grabbing;
+    transition: none;
+}
+
+.photo-wall:active {
+    cursor: grabbing;
+}
+
+.photo-container {
+    position: relative;
+    perspective: 1000px;
+    margin: 20px auto;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+}
+
 /* 页脚 */
 .footer {
     background: rgba(0, 0, 0, 0.9);
