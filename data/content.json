@@ -39,21 +39,21 @@
       "animationSpeed": "normal",
       "fontFamily": "noto",
       "theme": {
-        "name": "黑色樱花",
-        "type": "dark",
+        "name": "黄色花朵",
+        "type": "light",
         "colors": {
-          "primary": "#ff8fab",
-          "secondary": "#ff6b9d",
-          "background": "#1a1a1a",
-          "text": "#ffffff",
-          "border": "#333333"
+          "primary": "#ffd700",
+          "secondary": "#ffb700",
+          "background": "#fff9e6",
+          "text": "#333333",
+          "border": "#ffe4b5"
         },
         "features": [
-          "优雅暗色",
-          "浪漫樱花",
-          "优雅简约"
+          "温暖亮色",
+          "活力四射",
+          "清新自然"
         ],
-        "isDefault": true
+        "isDefault": false
       },
       "availableThemes": [
         {

@@ -1192,4 +1192,220 @@ body {
 }
 .white-snowflake {
     animation: snowflake-flat-fall linear infinite;
+}
+
+/* 黑色樱花主题样式 */
+[data-theme="黑色樱花"] body {
+    background: #000;
+    color: #fff;
+}
+
+[data-theme="黑色樱花"] .top-nav {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 182, 193, 0.2);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+}
+
+[data-theme="黑色樱花"] .back-btn, 
+[data-theme="黑色樱花"] .home-btn {
+    background: linear-gradient(45deg, #ffb3d9, #ff8fab);
+    color: #4a5568;
+    box-shadow: 0 4px 15px rgba(233, 30, 99, 0.08);
+    border: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="黑色樱花"] .back-btn:hover, 
+[data-theme="黑色樱花"] .home-btn:hover {
+    background: linear-gradient(45deg, #ff8fab, #ffb3d9);
+    color: #e91e63;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(233, 30, 99, 0.15);
+}
+
+[data-theme="黑色樱花"] .nav-title {
+    background: linear-gradient(45deg, #e91e63, #ff8fab, #ffb3d9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: logo-glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes logo-glow {
+    0% { filter: brightness(1) drop-shadow(0 0 5px rgba(233, 30, 99, 0.3)); transform: scale(1); }
+    100% { filter: brightness(1.2) drop-shadow(0 0 10px rgba(233, 30, 99, 0.5)); transform: scale(1.02); }
+}
+
+[data-theme="黑色樱花"] .article-detail {
+    background: rgba(255, 255, 255, 0.95);
+    color: #2c3e50;
+    box-shadow: 0 25px 80px rgba(233, 30, 99, 0.15);
+    border: 1px solid rgba(233, 30, 99, 0.2);
+}
+
+[data-theme="黑色樱花"] .article-detail::before {
+    background: linear-gradient(90deg, transparent, rgba(233, 30, 99, 0.4), transparent);
+}
+
+[data-theme="黑色樱花"] .article-header h1 {
+    background: linear-gradient(45deg, #e91e63, #ff8fab, #ffb3d9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+[data-theme="黑色樱花"] .title-decoration {
+    background: linear-gradient(45deg, #ff8fab, #ffb3d9);
+}
+
+[data-theme="黑色樱花"] .title-decoration::after {
+    background: #ff8fab;
+    box-shadow: 0 0 15px rgba(255, 139, 171, 0.6);
+}
+
+[data-theme="黑色樱花"] .article-meta {
+    background: rgba(233, 30, 99, 0.08);
+    color: #2c3e50;
+    border: 1px solid rgba(233, 30, 99, 0.15);
+}
+
+[data-theme="黑色樱花"] .meta-divider {
+    color: #ff8fab;
+}
+
+[data-theme="黑色樱花"] .article-meta i {
+    color: #ff8fab;
+}
+
+[data-theme="黑色樱花"] .excerpt-icon {
+    background: linear-gradient(45deg, #ff8fab, #ffb3d9);
+    color: #2c3e50;
+}
+
+[data-theme="黑色樱花"] .article-excerpt p {
+    color: #2c3e50;
+}
+
+[data-theme="黑色樱花"] .article-content {
+    color: #2c3e50;
+}
+
+[data-theme="黑色樱花"] .article-content h2::before {
+    background: linear-gradient(45deg, #ff8fab, #ffb3d9);
+}
+
+[data-theme="黑色樱花"] .tag {
+    background: rgba(233, 30, 99, 0.1);
+    color: #2c3e50;
+    border: 1px solid rgba(233, 30, 99, 0.3);
+}
+
+[data-theme="黑色樱花"] .tag:hover {
+    background: rgba(233, 30, 99, 0.2);
+    border-color: #ff8fab;
+    box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+}
+
+[data-theme="黑色樱花"] .action-btn {
+    background: linear-gradient(45deg, #ff8fab, #ffb3d9);
+    color: #2c3e50;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 15px rgba(233, 30, 99, 0.2);
+}
+
+[data-theme="黑色樱花"] .action-btn:hover {
+    background: linear-gradient(45deg, #ffb3d9, #ff8fab);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4);
+    border-color: #ff8fab;
+}
+
+[data-theme="黑色樱花"] .action-btn::before {
+    background: linear-gradient(45deg, #ffb3d9, #ff8fab);
+}
+
+[data-theme="黑色樱花"] .end-line {
+    background: linear-gradient(45deg, #ff8fab, #ffb3d9);
+}
+
+[data-theme="黑色樱花"] .end-symbol {
+    background: linear-gradient(45deg, #ff8fab, #ffb3d9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gentle-glow 3s ease-in-out infinite;
+}
+
+[data-theme="黑色樱花"] .end-text {
+    color: #2c3e50;
+}
+
+[data-theme="黑色樱花"] .back-to-top {
+    background: linear-gradient(45deg, #ff8fab, #ffb3d9);
+    color: #2c3e50;
+    box-shadow: 0 4px 15px rgba(233, 30, 99, 0.2);
+}
+
+[data-theme="黑色樱花"] .back-to-top:hover {
+    background: linear-gradient(45deg, #ffb3d9, #ff8fab);
+    box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4);
+}
+
+/* 黄色五角星飘落动画 */
+.yellow-star-flat {
+    pointer-events: none;
+}
+@keyframes star-flat-fall {
+    0% {
+        transform: translateY(0) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) scale(1) rotate(360deg);
+        opacity: 0.7;
+    }
+}
+
+/* 明亮素雅主题 - 纯白雪花五角星飘落 */
+.white-snowflake {
+    pointer-events: none;
+    background: #fff;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    /* 部分雪花已在JS中加了filter: blur()，这里不重复 */
+    opacity: 1;
+}
+@keyframes snowflake-flat-fall {
+    0% {
+        transform: translateY(-40px) rotate(0deg);
+        opacity: 0.7;
+    }
+    10% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0.3;
+    }
+}
+.white-snowflake {
+    animation: snowflake-flat-fall linear infinite;
+}
+
+/* 黑色樱花主题 - 文章内容链接颜色 */
+[data-theme="黑色樱花"] .article-content a {
+    color: #ffd6f5 !important; /* 明亮粉色，适合深色背景 */
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+[data-theme="黑色樱花"] .article-content a:hover {
+    color: #fff !important;
+    background: rgba(255,139,171,0.08);
+    border-radius: 3px;
 } 
