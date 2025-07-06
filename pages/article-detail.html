@@ -9,6 +9,17 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
+    <!-- 音乐播放器 -->
+    <div class="music-player">
+        <audio id="bgMusic" loop preload="auto" volume="0.5" autoplay>
+            <source src="../src/uploads/bgm.mp3" type="audio/mp3">
+        </audio>
+        <button id="musicToggle" class="music-btn" title="播放/暂停背景音乐">
+            <i class="fas fa-music"></i>
+        </button>
+        <div class="music-status" id="musicStatus">🎵 点击播放音乐</div>
+    </div>
+
     <!-- 樱花容器 -->
     <div class="sakura-container">
         <canvas id="sakura-canvas"></canvas>
@@ -131,6 +142,16 @@
             
             // 监听主题变化
             initThemeChangeListener();
+
+            // 音乐无缝衔接逻辑
+            saveMusicState();
+            restoreMusicState();
+
+            // 用户点击音乐按钮时也尝试恢复进度
+            const musicBtn = document.getElementById('musicToggle');
+            if (musicBtn) {
+                musicBtn.addEventListener('click', restoreMusicState);
+            }
         });
 
         // 加载主题设置
@@ -560,6 +581,8 @@
                 const readTime = Math.max(Math.ceil(article.content.length / 200), 1);
                 document.getElementById('readTime').textContent = `${readTime}分钟阅读`;
                 
+                // 渲染文章内容后修正a标签href，确保外链跳转正确
+                fixArticleLinks();
             } catch (error) {
                 console.error('加载文章失败:', error);
                 document.getElementById('articleTitle').textContent = '文章不存在';
@@ -838,6 +861,53 @@
             }
             
             animate();
+        }
+
+        // 音乐无缝衔接逻辑
+        function saveMusicState() {
+            const audio = document.getElementById('bgMusic');
+            if (audio) {
+                localStorage.setItem('music-currentTime', audio.currentTime);
+                localStorage.setItem('music-paused', audio.paused);
+            }
+        }
+        function restoreMusicState() {
+            const audio = document.getElementById('bgMusic');
+            if (audio) {
+                const time = parseFloat(localStorage.getItem('music-currentTime') || '0');
+                const paused = localStorage.getItem('music-paused') === 'true';
+                audio.oncanplay = function() {
+                    audio.currentTime = time;
+                    if (!paused) {
+                        audio.play().catch(() => {
+                            // 自动播放被拦截，尝试静音播放再恢复
+                            setTimeout(() => {
+                                audio.muted = true;
+                                audio.play().then(() => {
+                                    audio.muted = false;
+                                });
+                            }, 200);
+                        });
+                    } else {
+                        audio.pause();
+                    }
+                };
+            }
+        }
+        window.addEventListener('beforeunload', saveMusicState);
+        window.addEventListener('DOMContentLoaded', restoreMusicState);
+
+        // 渲染文章内容后修正a标签href，确保外链跳转正确
+        function fixArticleLinks() {
+            document.querySelectorAll('#articleContent a').forEach(a => {
+                let href = a.getAttribute('href');
+                if (href && !href.startsWith('http://') && !href.startsWith('https://')) {
+                    href = 'https://' + href.replace(/^\/+/, '');
+                    a.setAttribute('href', href);
+                }
+                a.setAttribute('target', '_blank');
+                a.setAttribute('rel', 'noopener noreferrer');
+            });
         }
     </script>
 </body>

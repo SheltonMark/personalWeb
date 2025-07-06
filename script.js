@@ -107,8 +107,29 @@ document.addEventListener('DOMContentLoaded', function() {
     // 应用主题
     function applyTheme(theme) {
         if (theme && theme.name) {
-            const previousTheme = document.documentElement.getAttribute('data-theme');
             document.documentElement.setAttribute('data-theme', theme.name);
+            // 恢复黑色樱花主题下的樱花和导航栏
+            const sakuraContainer = document.querySelector('.sakura-container');
+            const waterEffect = document.querySelector('.water-effect');
+            const navbar = document.querySelector('.navbar');
+            if (theme.name === '黑色樱花') {
+                if (sakuraContainer) {
+                    sakuraContainer.innerHTML = '';
+                    createSakura();
+                }
+                if (waterEffect) waterEffect.style.display = '';
+                if (navbar) {
+                    navbar.style.background = 'rgba(26,26,26,0.95)';
+                    navbar.style.color = '#fff';
+                }
+            } else {
+                if (sakuraContainer) sakuraContainer.innerHTML = '';
+                if (waterEffect) waterEffect.style.display = 'none';
+                if (navbar) {
+                    navbar.style.background = '';
+                    navbar.style.color = '';
+                }
+            }
             console.log(`已应用主题: ${theme.name}`);
             
             // 处理黄色花朵主题的动效
@@ -562,6 +583,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 将函数设置为全局，以便HTML中的onclick可以访问
     window.openArticle = function(type, id) {
+        if (typeof saveMusicState === 'function') saveMusicState(); // 跳转前立即保存
         window.location.href = `/pages/article-detail.html?type=${type}&id=${id}`;
     };
 
@@ -1493,34 +1515,36 @@ document.addEventListener('DOMContentLoaded', function() {
     async function init() {
         // 首先加载网站内容
         await loadSiteContent();
-        
-        createSakura();
+
+        // 只在黑色樱花主题下显示樱花和水波
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        if (currentTheme === '黑色樱花') {
+            createSakura();
+            // 显示水波
+            document.querySelector('.water-effect').style.display = '';
+        } else {
+            // 隐藏水波和樱花容器
+            const sakuraContainer = document.querySelector('.sakura-container');
+            if (sakuraContainer) sakuraContainer.innerHTML = '';
+            const waterEffect = document.querySelector('.water-effect');
+            if (waterEffect) waterEffect.style.display = 'none';
+        }
         await loadMusicConfig(); // 先加载音乐配置
         initMusicPlayer();
         initSmoothScroll();
-        
-        // 内容加载后再初始化动画
         setTimeout(() => {
-        initCardAnimations();
+            initCardAnimations();
         }, 100);
-        
         initNavbarScroll();
         initMouseFollower();
         loadPhotoWall();
         initTypewriterEffect();
         initParticleEffect();
         initRippleEffect(); // 添加涟漪效果
-        
-        // 根据当前主题初始化动效
-        const currentTheme = document.documentElement.getAttribute('data-theme');
         if (currentTheme === '黄色花朵') {
             initYellowFlowerEffects();
         }
-        
-        // 监听设置更新
         initSettingsListener();
-        
-        // 添加加载完成类
         document.body.classList.add('loaded');
     }
     
@@ -1683,6 +1707,30 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 300);
         }, 3000);
     }
+    
+    // 音乐无缝衔接逻辑
+    function saveMusicState() {
+        const audio = document.getElementById('bgMusic');
+        if (audio) {
+            localStorage.setItem('music-currentTime', audio.currentTime);
+            localStorage.setItem('music-paused', audio.paused);
+        }
+    }
+    function restoreMusicState() {
+        const audio = document.getElementById('bgMusic');
+        if (audio) {
+            const time = parseFloat(localStorage.getItem('music-currentTime') || '0');
+            const paused = localStorage.getItem('music-paused') === 'true';
+            audio.currentTime = time;
+            if (!paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        }
+    }
+    window.addEventListener('beforeunload', saveMusicState);
+    window.addEventListener('DOMContentLoaded', restoreMusicState);
     
     // 启动
     init();

@@ -732,6 +732,13 @@ body {
     color: #2c3e50;
 }
 
+[data-theme="黄色花朵"] .article-excerpt {
+    background: #fff9e6 !important;
+    border: 1.5px solid #ffe066 !important;
+    color: #bfa100 !important;
+    box-shadow: 0 2px 12px rgba(255, 215, 0, 0.06);
+}
+
 [data-theme="黄色花朵"] .article-excerpt p {
     color: #2c3e50;
 }

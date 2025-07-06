@@ -39,21 +39,21 @@
       "animationSpeed": "normal",
       "fontFamily": "noto",
       "theme": {
-        "name": "黄色花朵",
-        "type": "light",
+        "name": "黑色樱花",
+        "type": "dark",
         "colors": {
-          "primary": "#ffd700",
-          "secondary": "#ffb700",
-          "background": "#fff9e6",
-          "text": "#333333",
-          "border": "#ffe4b5"
+          "primary": "#ff8fab",
+          "secondary": "#ff6b9d",
+          "background": "#1a1a1a",
+          "text": "#ffffff",
+          "border": "#333333"
         },
         "features": [
-          "温暖亮色",
-          "活力四射",
-          "清新自然"
+          "优雅暗色",
+          "浪漫樱花",
+          "优雅简约"
         ],
-        "isDefault": false
+        "isDefault": true
       },
       "availableThemes": [
         {
@@ -238,7 +238,7 @@
           "成长",
           "友谊"
         ],
-        "content": "真正的朋友是那些在你最困难时伸出援手的人，是那些愿意听你倾诉的人。老师们的教诲，让我不仅学到了知识，更学会了做人的道理。<a href=\"www.baidu.com\" target=\"_blank\">baidu</a>"
+        "content": "真正的朋友是那些在你最困难时伸出援手的人，是那些愿意<a href=\"https://www.baidu.com/\" target=\"_blank\">百度</a>听你倾诉的人。老师们的教诲，让我不仅学到了知识，更学会了做人的道理。<a href=\"www.baidu.com\" target=\"_blank\">baidu</a>"
       },
       {
         "id": 3,

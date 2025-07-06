@@ -1338,4 +1338,17 @@ body {
 }
 [data-theme="明亮素雅"] .nav-link::after {
     display: none;
+}
+
+[data-theme="黄色花朵"] .card,
+[data-theme="黄色花朵"] .article-card,
+[data-theme="黄色花朵"] .photo-card,
+[data-theme="黄色花朵"] .cards-grid .card,
+[data-theme="黄色花朵"] .cards-grid .article-card {
+    border: 1.5px solid #ffd700 !important;
+}
+[data-theme="黄色花朵"] .card:hover,
+[data-theme="黄色花朵"] .article-card:hover,
+[data-theme="黄色花朵"] .photo-card:hover {
+    border-color: #ffd700 !important;
 } 
