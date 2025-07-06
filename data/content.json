@@ -37,7 +37,60 @@
       "enableWater": true,
       "enableParticles": true,
       "animationSpeed": "normal",
-      "fontFamily": "noto"
+      "fontFamily": "noto",
+      "theme": {
+        "name": "黑色樱花",
+        "type": "dark",
+        "colors": {
+          "primary": "#ff8fab",
+          "secondary": "#ff6b9d",
+          "background": "#1a1a1a",
+          "text": "#ffffff",
+          "border": "#333333"
+        },
+        "features": ["优雅暗色", "浪漫樱花", "优雅简约"]
+      },
+      "availableThemes": [
+        {
+          "name": "黑色樱花",
+          "type": "dark",
+          "colors": {
+            "primary": "#ff8fab",
+            "secondary": "#ff6b9d",
+            "background": "#1a1a1a",
+            "text": "#ffffff",
+            "border": "#333333"
+          },
+          "features": ["优雅暗色", "浪漫樱花", "优雅简约"],
+          "isDefault": true
+        },
+        {
+          "name": "黄色花朵",
+          "type": "light",
+          "colors": {
+            "primary": "#ffd700",
+            "secondary": "#ffb700",
+            "background": "#fff9e6",
+            "text": "#333333",
+            "border": "#ffe4b5"
+          },
+          "features": ["温暖亮色", "活力四射", "清新自然"],
+          "isDefault": false
+        },
+        {
+          "name": "明亮家雅",
+          "type": "light",
+          "colors": {
+            "primary": "#4caf50",
+            "secondary": "#45a049",
+            "background": "#f0f7f0",
+            "text": "#333333",
+            "border": "#c8e6c9"
+          },
+          "features": ["自然绿色", "清新明亮", "家居雅致"],
+          "isDefault": false
+        }
+      ]
     },
     "media": {
       "photoWall": {
