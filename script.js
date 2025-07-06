@@ -919,11 +919,34 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (photoWall && previewImage && photoData) {
             let isAutoRotating = true;
+            let currentRotation = 0; // 跟踪当前旋转角度
+            
+            // 计算实际显示的照片索引
+            function getVisiblePhotoIndex(itemIndex) {
+                // 每个照片占60度，计算当前旋转后的实际位置
+                const itemAngle = 60 * itemIndex;
+                const totalRotation = (currentRotation % 360 + 360) % 360;
+                const relativeAngle = (itemAngle - totalRotation + 360) % 360;
+                
+                // 返回视觉上最接近正面的照片索引
+                return Math.floor(relativeAngle / 60);
+            }
+            
+            // 监听动画旋转
+            photoWall.addEventListener('animationiteration', () => {
+                currentRotation += 360;
+            });
             
             // 暂停/恢复旋转
             photoWall.addEventListener('mouseenter', function() {
                 isAutoRotating = false;
                 this.style.animationPlayState = 'paused';
+                // 获取当前旋转角度
+                const computedStyle = window.getComputedStyle(this);
+                const transform = computedStyle.getPropertyValue('transform');
+                const matrix = new DOMMatrix(transform);
+                const angle = Math.round(Math.atan2(matrix.m12, matrix.m11) * (180/Math.PI));
+                currentRotation = angle;
             });
             
             photoWall.addEventListener('mouseleave', function() {
@@ -934,8 +957,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // 悬停照片显示预览
             photoItems.forEach((item, index) => {
                 item.addEventListener('mouseenter', function() {
-                    const dataIndex = parseInt(this.dataset.index);
-                    const photo = photoData[dataIndex];
+                    // 获取当前视觉上正面的照片索引
+                    const visibleIndex = getVisiblePhotoIndex(index);
+                    const photo = photoData[visibleIndex];
                     
                     if (photo) {
                         previewImage.src = photo.src;
@@ -947,13 +971,30 @@ document.addEventListener('DOMContentLoaded', function() {
                         }, 100);
                     }
                 });
+
+                // 鼠标离开时恢复默认预览图片
+                item.addEventListener('mouseleave', function() {
+                    // 获取当前视觉上正面的照片
+                    const visibleIndex = getVisiblePhotoIndex(0);
+                    const photo = photoData[visibleIndex];
+                    
+                    if (photo) {
+                        previewImage.src = photo.src;
+                        // 添加换图动画
+                        previewImage.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            previewImage.style.transform = 'scale(1)';
+                        }, 100);
+                    }
+                });
                 
                 // 点击照片查看大图模态框
                 item.addEventListener('click', function() {
-                    const dataIndex = parseInt(this.dataset.index);
-                    const photo = photoData[dataIndex];
+                    // 获取当前视觉上正面的照片索引
+                    const visibleIndex = getVisiblePhotoIndex(index);
+                    const photo = photoData[visibleIndex];
                     if (photo) {
-                        showPhotoModal(photo.src, dataIndex);
+                        showPhotoModal(photo.src, visibleIndex);
                     }
                 });
             });
