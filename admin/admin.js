@@ -1731,7 +1731,7 @@ class AdminSystem {
     // 加载照片墙设置
     async loadPhotoWallSettings() {
         try {
-            const response = await fetch('/api/settings');
+            const response = await fetch('/api/content');
             const data = await response.json();
             
             if (data.settings && data.settings.media && data.settings.media.photoWall) {
@@ -1739,14 +1739,41 @@ class AdminSystem {
                 for (let i = 1; i <= 6; i++) {
                     const photoData = photoWall[`photo${i}`];
                     if (photoData) {
+                        // 设置图片URL和标题
                         document.getElementById(`photo${i}Src`).value = photoData.src || '';
                         document.getElementById(`photo${i}Title`).value = photoData.title || '';
-                        this.updatePhotoPreview(i, photoData.src);
+                        
+                        // 更新预览
+                        const preview = document.getElementById(`photoPreview${i}`);
+                        const img = document.getElementById(`photoImg${i}`);
+                        const placeholder = preview.querySelector('.placeholder-text');
+                        
+                        if (photoData.src) {
+                            img.src = photoData.src;
+                            img.style.display = 'block';
+                            if (placeholder) placeholder.style.display = 'none';
+                            
+                            // 处理图片加载错误
+                            img.onerror = () => {
+                                img.style.display = 'none';
+                                if (placeholder) {
+                                    placeholder.style.display = 'block';
+                                    placeholder.textContent = '图片加载失败';
+                                }
+                            };
+                        } else {
+                            img.style.display = 'none';
+                            if (placeholder) {
+                                placeholder.style.display = 'block';
+                                placeholder.textContent = `照片位置 ${i}`;
+                            }
+                        }
                     }
                 }
             }
         } catch (error) {
             console.error('加载照片墙设置失败:', error);
+            this.showMessage('加载照片墙设置失败', 'error');
         }
     }
 
@@ -1851,6 +1878,7 @@ class AdminSystem {
             photoWall: {}
         };
         
+        // 收集所有照片数据
         for (let i = 1; i <= 6; i++) {
             const src = document.getElementById(`photo${i}Src`).value.trim();
             const title = document.getElementById(`photo${i}Title`).value.trim();
@@ -1862,22 +1890,23 @@ class AdminSystem {
         }
         
         try {
-            const response = await fetch('/api/settings', {
-                method: 'POST',
+            // 保存设置
+            const response = await fetch('/api/settings/media', {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    section: 'media',
-                    data: photoWallData
-                })
+                body: JSON.stringify(photoWallData)
             });
             
             if (response.ok) {
                 this.showMessage('照片墙配置保存成功！', 'success');
+                
+                // 通知前端更新
                 this.notifySettingsUpdate();
-                // 保存后刷新照片墙设置
-                await this.loadUserSettings();
+                
+                // 重新加载照片墙预览
+                await this.loadPhotoWallSettings();
             } else {
                 throw new Error('保存失败');
             }
