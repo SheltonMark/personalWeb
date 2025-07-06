@@ -2977,4 +2977,266 @@ body {
 
 #tagModal .save-btn:hover, #linkModal .save-btn:hover {
     transform: translateY(-2px);
+}
+
+/* 主题选择器样式 */
+.theme-selector-header {
+    margin-bottom: 30px;
+}
+
+.theme-selector-header p {
+    color: #666;
+    font-size: 14px;
+    margin: 0;
+}
+
+.theme-selector-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.theme-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.theme-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.theme-card[data-theme="黑色樱花"] {
+    border-color: #ff8fab;
+}
+
+.theme-preview {
+    height: 120px;
+    position: relative;
+    overflow: hidden;
+}
+
+.theme-preview.dark-theme {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
+.theme-preview.light-theme.yellow-theme {
+    background: linear-gradient(135deg, #fff9e6 0%, #ffeecc 100%);
+}
+
+.theme-preview.light-theme.pearl-theme {
+    background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+}
+
+.theme-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 20px;
+}
+
+.theme-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ff8fab;
+}
+
+.dark-theme .theme-dot {
+    background: #ff8fab;
+}
+
+.yellow-theme .theme-dot {
+    background: #ffd700;
+}
+
+.pearl-theme .theme-dot {
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+}
+
+.theme-line {
+    flex: 1;
+    height: 2px;
+    background: #ff8fab;
+    opacity: 0.3;
+}
+
+.dark-theme .theme-line {
+    background: #ff8fab;
+}
+
+.yellow-theme .theme-line {
+    background: #ffd700;
+}
+
+.pearl-theme .theme-line {
+    background: #f5f5f5;
+}
+
+.theme-content {
+    padding: 0 20px 15px;
+}
+
+.theme-text-line {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.dark-theme .theme-text-line {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.yellow-theme .theme-text-line {
+    background: rgba(255, 215, 0, 0.3);
+}
+
+.pearl-theme .theme-text-line {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.theme-text-line.short {
+    width: 60%;
+}
+
+.theme-info {
+    padding: 20px;
+}
+
+.theme-info h4 {
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+.theme-description {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.theme-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.feature-tag {
+    background: #f0f4ff;
+    color: #667eea;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.theme-status {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 15px;
+}
+
+.theme-card[data-theme="黑色樱花"] .theme-status {
+    color: #ff8fab;
+    font-weight: 600;
+}
+
+.theme-apply-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.theme-apply-btn:not(.active) {
+    background: #667eea;
+    color: white;
+}
+
+.theme-apply-btn:not(.active):hover {
+    background: #5a6fd8;
+    transform: translateY(-2px);
+}
+
+.theme-apply-btn.active {
+    background: #ff8fab;
+    color: white;
+}
+
+.theme-apply-btn.active:hover {
+    background: #ff7aa3;
+}
+
+.theme-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.theme-actions .preview-btn,
+.theme-actions .reset-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.theme-actions .preview-btn {
+    background: #4CAF50;
+    color: white;
+}
+
+.theme-actions .preview-btn:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+}
+
+.theme-actions .reset-btn {
+    background: #f44336;
+    color: white;
+}
+
+.theme-actions .reset-btn:hover {
+    background: #da190b;
+    transform: translateY(-2px);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .theme-selector-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .theme-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .theme-actions .preview-btn,
+    .theme-actions .reset-btn {
+        width: 100%;
+        max-width: 200px;
+    }
 } 

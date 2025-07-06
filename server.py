@@ -708,6 +708,44 @@ def update_music_settings():
     else:
         return jsonify({"error": "Failed to read data"}), 500
 
+@app.route('/api/settings/theme', methods=['PUT'])
+def update_theme_settings():
+    """Update theme settings"""
+    data = read_data()
+    if data:
+        if 'settings' not in data:
+            data['settings'] = {}
+        if 'appearance' not in data['settings']:
+            data['settings']['appearance'] = {}
+        
+        theme_data = request.get_json()
+        theme_name = theme_data.get('themeName')
+        
+        if not theme_name:
+            return jsonify({"error": "Theme name is required"}), 400
+        
+        # Get available themes from configuration
+        available_themes = data['settings']['appearance'].get('availableThemes', [])
+        selected_theme = None
+        
+        for theme in available_themes:
+            if theme['name'] == theme_name:
+                selected_theme = theme
+                break
+        
+        if not selected_theme:
+            return jsonify({"error": "Theme not found"}), 404
+        
+        # Update current theme
+        data['settings']['appearance']['theme'] = selected_theme
+        
+        if write_data(data):
+            return jsonify({"message": f"Theme '{theme_name}' applied successfully"})
+        else:
+            return jsonify({"error": "Update failed"}), 500
+    else:
+        return jsonify({"error": "Failed to read data"}), 500
+
 # Tags management APIs
 @app.route('/api/tags', methods=['GET'])
 def get_tags():

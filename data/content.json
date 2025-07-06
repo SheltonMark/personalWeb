@@ -39,16 +39,21 @@
       "animationSpeed": "normal",
       "fontFamily": "noto",
       "theme": {
-        "name": "黑色樱花",
-        "type": "dark",
+        "name": "黄色花朵",
+        "type": "light",
         "colors": {
-          "primary": "#ff8fab",
-          "secondary": "#ff6b9d",
-          "background": "#1a1a1a",
-          "text": "#ffffff",
-          "border": "#333333"
+          "primary": "#ffd700",
+          "secondary": "#ffb700",
+          "background": "#fff9e6",
+          "text": "#333333",
+          "border": "#ffe4b5"
         },
-        "features": ["优雅暗色", "浪漫樱花", "优雅简约"]
+        "features": [
+          "温暖亮色",
+          "活力四射",
+          "清新自然"
+        ],
+        "isDefault": false
       },
       "availableThemes": [
         {
@@ -61,7 +66,11 @@
             "text": "#ffffff",
             "border": "#333333"
           },
-          "features": ["优雅暗色", "浪漫樱花", "优雅简约"],
+          "features": [
+            "优雅暗色",
+            "浪漫樱花",
+            "优雅简约"
+          ],
           "isDefault": true
         },
         {
@@ -74,20 +83,28 @@
             "text": "#333333",
             "border": "#ffe4b5"
           },
-          "features": ["温暖亮色", "活力四射", "清新自然"],
+          "features": [
+            "温暖亮色",
+            "活力四射",
+            "清新自然"
+          ],
           "isDefault": false
         },
         {
-          "name": "明亮家雅",
+          "name": "明亮素雅",
           "type": "light",
           "colors": {
-            "primary": "#4caf50",
-            "secondary": "#45a049",
-            "background": "#f0f7f0",
+            "primary": "#f5f5f5",
+            "secondary": "#e8e8e8",
+            "background": "#fafafa",
             "text": "#333333",
-            "border": "#c8e6c9"
+            "border": "#e0e0e0"
           },
-          "features": ["自然绿色", "清新明亮", "家居雅致"],
+          "features": [
+            "淡雅珍珠",
+            "素雅明亮",
+            "简约优雅"
+          ],
           "isDefault": false
         }
       ]

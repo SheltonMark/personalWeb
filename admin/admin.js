@@ -120,7 +120,7 @@ class AdminSystem {
         if (appearanceSettingsForm) {
             appearanceSettingsForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                this.handleSaveAppearanceSettings();
+                this.handleSaveThemeSettings();
             });
         }
         
@@ -157,6 +157,8 @@ class AdminSystem {
                 this.switchSettingsTab(tab);
             });
         });
+
+        // 主题选择器事件绑定将在设置页面加载时处理
 
         // 照片输入框实时预览
         for (let i = 1; i <= 6; i++) {
@@ -1445,37 +1447,10 @@ class AdminSystem {
         }
     }
 
-    // 保存外观设置
-    async handleSaveAppearanceSettings() {
-        const appearanceData = {
-            themeColor: document.getElementById('themeColor').value,
-            enableSakura: document.getElementById('enableSakura').checked,
-            enableWater: document.getElementById('enableWater').checked,
-            enableParticles: document.getElementById('enableParticles').checked,
-            animationSpeed: document.getElementById('animationSpeed').value,
-            fontFamily: document.getElementById('fontFamily').value
-        };
-
-        try {
-            const response = await fetch('/api/settings/appearance', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(appearanceData)
-            });
-
-            const result = await response.json();
-            if (response.ok) {
-                this.showMessage('外观设置保存成功', 'success');
-                this.notifySettingsUpdate();
-                // 保存后刷新外观设置
-                await this.loadUserSettings();
-            } else {
-                this.showMessage(result.error || '保存失败', 'error');
-            }
-        } catch (error) {
-            console.error('保存外观设置失败:', error);
-            this.showMessage('保存失败', 'error');
-        }
+    // 保存主题设置
+    async handleSaveThemeSettings() {
+        // 主题选择器不需要表单提交，改为点击按钮直接应用
+        this.showMessage('请点击主题卡片上的"应用主题"按钮', 'info');
     }
 
     // 保存媒体设置
@@ -3559,3 +3534,140 @@ admin.initPhotowallInputEvents = function() {
         }
     }
 }; 
+
+// 主题选择器功能
+admin.applyTheme = async function(themeName) {
+    try {
+        // 更新主题配置
+        const response = await fetch('/api/settings/theme', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ themeName })
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            this.showMessage(`已应用主题：${themeName}`, 'success');
+            
+            // 更新UI状态
+            this.updateThemeUI(themeName);
+            
+            // 通知前端更新
+            this.notifySettingsUpdate();
+            
+            // 重新加载设置
+            await this.loadUserSettings();
+        } else {
+            this.showMessage(result.error || '应用主题失败', 'error');
+        }
+    } catch (error) {
+        console.error('应用主题失败:', error);
+        this.showMessage('应用主题失败', 'error');
+    }
+};
+
+// 更新主题UI状态
+admin.updateThemeUI = function(currentTheme) {
+    // 更新所有主题卡片的状态
+    document.querySelectorAll('.theme-card').forEach(card => {
+        const themeName = card.dataset.theme;
+        const statusEl = card.querySelector('.theme-status');
+        const btnEl = card.querySelector('.theme-apply-btn');
+        
+        if (themeName === currentTheme) {
+            statusEl.textContent = '当前使用';
+            btnEl.classList.add('active');
+            btnEl.innerHTML = '<i class="fas fa-check"></i> 应用主题';
+            card.style.borderColor = this.getThemeColor(themeName);
+        } else {
+            statusEl.textContent = '未使用';
+            btnEl.classList.remove('active');
+            btnEl.innerHTML = '<i class="fas fa-palette"></i> 应用主题';
+            card.style.borderColor = 'transparent';
+        }
+    });
+};
+
+// 获取主题颜色
+admin.getThemeColor = function(themeName) {
+    const colors = {
+        '黑色樱花': '#ff8fab',
+        '黄色花朵': '#ffd700',
+        '明亮素雅': '#f5f5f5'
+    };
+    return colors[themeName] || '#667eea';
+};
+
+// 预览当前主题
+admin.previewCurrentTheme = function() {
+    window.open('/', '_blank');
+    this.showMessage('已在新窗口打开预览', 'info');
+};
+
+// 重置为默认主题
+admin.resetToDefaultTheme = async function() {
+    if (!confirm('确定要重置为默认主题吗？')) {
+        return;
+    }
+    
+    try {
+        await this.applyTheme('黑色樱花');
+    } catch (error) {
+        console.error('重置主题失败:', error);
+        this.showMessage('重置主题失败', 'error');
+    }
+};
+
+// 加载主题设置
+admin.loadThemeSettings = async function() {
+    try {
+        const response = await fetch('/api/content');
+        const data = await response.json();
+        
+        if (data.settings && data.settings.appearance && data.settings.appearance.theme) {
+            const currentTheme = data.settings.appearance.theme.name;
+            this.updateThemeUI(currentTheme);
+        }
+    } catch (error) {
+        console.error('加载主题设置失败:', error);
+    }
+};
+
+// 扩展switchSettingsTab方法，加载主题设置
+const originalSwitchSettingsTab2 = admin.switchSettingsTab.bind(admin);
+admin.switchSettingsTab = function(tab) {
+    originalSwitchSettingsTab2(tab);
+    
+    if (tab === 'appearance') {
+        setTimeout(() => {
+            this.loadThemeSettings();
+            this.bindThemeEvents();
+        }, 100);
+    }
+};
+
+// 绑定主题选择器事件
+admin.bindThemeEvents = function() {
+    // 主题应用按钮事件
+    document.querySelectorAll('.theme-apply-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const themeName = btn.dataset.theme;
+            this.applyTheme(themeName);
+        });
+    });
+
+    // 主题预览和重置按钮
+    const previewThemeBtn = document.getElementById('previewThemeBtn');
+    if (previewThemeBtn) {
+        previewThemeBtn.addEventListener('click', () => {
+            this.previewCurrentTheme();
+        });
+    }
+
+    const resetThemeBtn = document.getElementById('resetThemeBtn');
+    if (resetThemeBtn) {
+        resetThemeBtn.addEventListener('click', () => {
+            this.resetToDefaultTheme();
+        });
+    }
+};

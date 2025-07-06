@@ -1,3 +1,47 @@
+/* CSS变量 - 主题系统 */
+:root {
+    /* 默认主题 - 黑色樱花 */
+    --theme-primary: #ff8fab;
+    --theme-secondary: #ff6b9d;
+    --theme-background: #1a1a1a;
+    --theme-text: #ffffff;
+    --theme-border: #333333;
+    
+    /* 衍生颜色 */
+    --theme-primary-light: #ffb3d9;
+    --theme-primary-alpha: rgba(255, 139, 171, 0.3);
+    --theme-background-alpha: rgba(26, 26, 26, 0.9);
+    --theme-text-muted: #cccccc;
+}
+
+/* 黄色花朵主题 */
+[data-theme="黄色花朵"] {
+    --theme-primary: #ffd700;
+    --theme-secondary: #ffb700;
+    --theme-background: #fff9e6;
+    --theme-text: #333333;
+    --theme-border: #ffe4b5;
+    
+    --theme-primary-light: #ffeb99;
+    --theme-primary-alpha: rgba(255, 215, 0, 0.3);
+    --theme-background-alpha: rgba(255, 249, 230, 0.9);
+    --theme-text-muted: #666666;
+}
+
+/* 明亮素雅主题 */
+[data-theme="明亮素雅"] {
+    --theme-primary: #f5f5f5;
+    --theme-secondary: #e8e8e8;
+    --theme-background: #fafafa;
+    --theme-text: #333333;
+    --theme-border: #e0e0e0;
+    
+    --theme-primary-light: #ffffff;
+    --theme-primary-alpha: rgba(245, 245, 245, 0.3);
+    --theme-background-alpha: rgba(250, 250, 250, 0.9);
+    --theme-text-muted: #666666;
+}
+
 /* 基础样式重置 */
 * {
     margin: 0;
@@ -11,10 +55,11 @@ html {
 
 body {
     font-family: 'Noto Serif SC', serif;
-    background: #000;
-    color: #fff;
+    background: var(--theme-background, #000);
+    color: var(--theme-text, #fff);
     overflow-x: hidden;
     line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* 音乐播放器 */
@@ -30,7 +75,7 @@ body {
 }
 
 .music-btn {
-    background: linear-gradient(45deg, #ff6b9d, #ff8fab);
+    background: linear-gradient(45deg, var(--theme-secondary), var(--theme-primary));
     border: none;
     border-radius: 50%;
     width: 50px;
@@ -38,14 +83,14 @@ body {
     color: white;
     font-size: 18px;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+    box-shadow: 0 4px 15px var(--theme-primary-alpha);
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
 }
 
 .music-btn:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.5);
+    box-shadow: 0 6px 20px var(--theme-primary-alpha);
 }
 
 .music-btn.playing {
@@ -54,15 +99,15 @@ body {
 
 @keyframes music-pulse {
     0% { 
-        box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+        box-shadow: 0 4px 15px var(--theme-primary-alpha);
         transform: scale(1);
     }
     50% { 
-        box-shadow: 0 4px 25px rgba(255, 107, 157, 0.6);
+        box-shadow: 0 4px 25px var(--theme-primary-alpha);
         transform: scale(1.05);
     }
     100% { 
-        box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+        box-shadow: 0 4px 15px var(--theme-primary-alpha);
         transform: scale(1);
     }
 }
@@ -153,11 +198,12 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.9);
+    background: var(--theme-background-alpha);
     backdrop-filter: blur(10px);
     padding: 15px 0;
     z-index: 100;
-    border-bottom: 1px solid rgba(255, 107, 157, 0.3);
+    border-bottom: 1px solid var(--theme-primary-alpha);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .nav-container {
@@ -178,10 +224,11 @@ body {
 .logo-text {
     font-size: 24px;
     font-weight: 600;
-    background: linear-gradient(45deg, #ff6b9d, #ff8fab, #ffb3d9);
+    background: linear-gradient(45deg, var(--theme-secondary), var(--theme-primary), var(--theme-primary-light));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    transition: background 0.3s ease;
 }
 
 .nav-menu {
@@ -191,7 +238,7 @@ body {
 }
 
 .nav-link {
-    color: #fff;
+    color: var(--theme-text);
     text-decoration: none;
     font-weight: 500;
     transition: all 0.3s ease;
@@ -200,7 +247,7 @@ body {
 }
 
 .nav-link:hover {
-    color: #ff8fab;
+    color: var(--theme-primary);
 }
 
 .nav-link::after {
@@ -210,7 +257,7 @@ body {
     left: 0;
     width: 0;
     height: 2px;
-    background: linear-gradient(45deg, #ff6b9d, #ff8fab);
+    background: linear-gradient(45deg, var(--theme-secondary), var(--theme-primary));
     transition: width 0.3s ease;
 }
 

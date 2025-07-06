@@ -37,6 +37,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 应用系统设置
     function applySystemSettings(settings) {
+        // 应用主题设置
+        if (settings.appearance && settings.appearance.theme) {
+            applyTheme(settings.appearance.theme);
+        }
+        
         // 应用基本设置
         if (settings.basic) {
             const basic = settings.basic;
@@ -88,6 +93,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // 应用板块设置
         if (settings.sections) {
             applySectionSettings(settings.sections);
+        }
+    }
+    
+    // 应用主题
+    function applyTheme(theme) {
+        if (theme && theme.name) {
+            document.documentElement.setAttribute('data-theme', theme.name);
+            console.log(`已应用主题: ${theme.name}`);
         }
     }
     
